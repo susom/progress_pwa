@@ -25,7 +25,7 @@ $("#jquery_jplayer_1").jPlayer({
             title   : "Relaxation Resource Binaural Technology",
             m4a     : "audio/R01_Beth_wBeats.mp3"
         });
-        app.log("jplayer loaded");
+        console.log("jplayer loaded");
 
     },
     cssSelectorAncestor : "#jp_container_1",
@@ -42,15 +42,14 @@ $("#jquery_jplayer_1").jPlayer({
 //ADD EVENTS TO THE PLAY AND PAUSE BUTTON
 $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
     // Add a listener to report the time play began
-    app.log("play start! : current playtime " + app.cache.sessionPlayTime);
-    app.startTimer();
-    // window.plugins.insomnia.keepAwake();
+    console.log("play start! : current playtime " + app.cache.sessionPlayTime);
+    // app.startTimer();
 });
 
 $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
     // Add a listener to handle pausing
-    app.log("play pause! : current playtime " + app.cache.sessionPlayTime);
-    app.stopTimer();
+    console.log("play pause! : current playtime " + app.cache.sessionPlayTime);
+    // app.stopTimer();
 });
 
 $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {

@@ -1,0 +1,15 @@
+.view_box{
+    text-align:center;
+}
+.view_body{
+    margin:0 auto;
+    max-width:86vw;
+}
+
+.player {
+    position:relative;
+}
+
+#jp_container_1{
+    width:initial;
+}
