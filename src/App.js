@@ -6,9 +6,7 @@ import {
 } from "react-router-dom";
 
 import {SessionContextProvider} from "./contexts/Session";
-
 import BackgroundSelection from "./components/backgrounds";
-
 import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';

@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 
-import "../../assets/css/view_splash.css";
+// import "../../assets/css/view_splash.css";
 export function Landing(){
     const [redirectNow, setRedirectNow] = useState(false);
 
