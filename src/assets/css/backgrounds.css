@@ -1,13 +1,12 @@
-#bgs{
+/* #bgs{
     position:fixed;
     bottom:0;
-    /*bottom:-67px;*/
     text-align:center;
     width:100%;
     padding:10px 0;
     border-top:1px solid #666;
     transition: bottom .25s ease-in-out;
-}
+} */
 
 #bgs.open{
     bottom:0;
@@ -23,7 +22,7 @@
     opacity:.6;
     background:#ccc;
 }
-#bgs .handle{
+/* #bgs .handle{
     position: absolute;
     top: -31px;
     left: 50%;
@@ -38,7 +37,7 @@
     line-height: 30px;
     text-decoration:none;
     color:#333;
-}
+} */
 #bgs .handle:after{
     content:"";
     z-index:-1;
@@ -52,25 +51,26 @@
 }
 #bgs .bg{
     display:inline-block;
-    width:40px;
-    height:40px;
+    width:80px;
+    height:80px;
     border:1px solid #C6EAF4;
-    margin:0 5px;
+    /* margin:0 5px; */
 }
-a.seashell{
-    background:#C6EAF4 url(../img/beach_seashell.jpg) 0% 0% no-repeat;
+a.waterfall{
+    background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;
     background-size:cover;
 }
-a.bluewaters{
-    background:#C6EAF4 url(../img/blue_waters.jpg) 0% 0% no-repeat;
+
+a.fire{
+    background:#C6EAF4 url(../img/fire.gif) 0% 0% no-repeat;
     background-size:cover;
 }
 a.stillblue{
     background:#C6EAF4 url(../img/calm_blue.jpg) 0% 0% no-repeat;
     background-size:cover;
 }
-a.carribean{
-    background:#C6EAF4 url(../img/caribbean.gif) 0% 0% no-repeat;
+a.winter{
+    background:#C6EAF4 url(../img/winter.gif) 0% 0% no-repeat;
     background-size:cover;
 }
 a.night{
@@ -84,4 +84,25 @@ a.norway{
 a.beach{
     background: #C6EAF4 url(../img/tropicalbeach.gif) 0% 0% no-repeat;
     background-size:cover;
+}
+
+
+.ant-drawer-body {
+    padding: 10px !important;
+}
+
+/* .ant-drawer-content-wrapper::after {
+    opacity: 0.5 !important;
+    content: ''
+
+} */
+
+.MediaPositioning {
+    margin-top: auto;
+}
+
+#main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }

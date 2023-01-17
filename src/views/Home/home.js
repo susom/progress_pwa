@@ -1,17 +1,23 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useContext} from "react";
+import {SessionContext} from '../../contexts/Session';
 import ReactPlayer from 'react-player';
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row, Button, Drawer } from 'antd';
 import MediaController from "../../components/MediaController";
 import "../../assets/skin/pink.flag/css/jplayer.pink.flag.css";
 import "../../assets/css/view_home.css";
 import mp3 from "../../assets/audio/R01_Beth_wBeats.mp3";
-import AudioPlaceholder from '../../assets/img/AudioPlaceholder.png';
+import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
+import BackgroundSelection from "../../components/Backgrounds";
 
 export function Home() {
     const [played, setPlayed] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [playbackRate, setPlaybackRate] = useState(1)
+    const [transparent, setTransparent] = useState(true)
+    const [drawerVisible, setDrawerVisible] = useState(false);
+
+    const context = useContext(SessionContext)
+    const player = useRef();
     const handlePlayed = (e) => {
         setPlayed(e.played)
     }
@@ -21,17 +27,36 @@ export function Home() {
     }
 
     const seek = (playedRatio) => player.current.seekTo(playedRatio);
-    const fastForward = (rate) => {
+    const fastForward = () => {
         if(playbackRate === 1)
             setPlaybackRate(2)
         else 
             setPlaybackRate(1)
     }
 
-    const player = useRef();
+    const onTouch = () => {
+        setTransparent(false)
+        setTimeout(() => {
+            setTransparent(true)
+        }, 5000)
+    }
+
+    const renderTransparentClasses = () => transparent ? `transparent` : 'visible'
+    
+    const renderClasses = () => `panel ${context.data.background}`
+   
     return (
 
-        <div id="main" className="panel" >
+        <div id="main" className={renderClasses()}>
+            <Drawer 
+                width={100} 
+                placement="left" 
+                onClose={()=>setDrawerVisible(false)} 
+                visible={drawerVisible}
+                closable={false}
+            >
+                <BackgroundSelection/>
+            </Drawer>
             <Row justify="center">
                 <Col span={12}>
                     <hgroup style={{ marginBottom: '15vh' }}>
@@ -40,18 +65,23 @@ export function Home() {
                     </hgroup>
                 </Col>
             </Row>
+            <div class='MediaPositioning'>
             <Row justify="center">
                 <Col xs={24} md={18} lg={16} xl={12}>
-                    <div style={{ height: '33vh', position: 'relative' }}>
                     <Card
+                        onMouseDown={onTouch}
+                        onTouchStart={onTouch}
+                        className={renderTransparentClasses()}
                         cover={
                             <img
+                                style={{maxWidth: '70px', display:'block', marginLeft:'auto', marginRight: 'auto'}}
                                 alt="example"
                                 src={AudioPlaceholder}
                             />
                         }
                     >
                         <div className='player-wrapper' >
+                            <Button onClick={()=>    setDrawerVisible(true)}>background</Button>
                             <ReactPlayer
                                 ref={player}
                                 className='react-player'
@@ -63,9 +93,6 @@ export function Home() {
                                 onProgress={handlePlayed}
                                 playbackRate={playbackRate}
                                 playing={playing}
-                                // onReady={() => console.log('Ready!')}
-                                // onError={(e) => console.log(e)}
-                                // onBuffer={() => console.log('buffer')}
                             />
                         </div>
 
@@ -78,11 +105,10 @@ export function Home() {
                             playbackRate={playbackRate}
                         />
                     </Card>
-                    </div>
                 </Col>
             
             </Row>
-
+            </div>
         </div>
     )
 }
