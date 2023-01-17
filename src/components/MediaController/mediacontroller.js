@@ -32,11 +32,9 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
     
     return (
-        <div className="media-controller">
-
+        <div className="media-controller" style={{marginBottom: '35px'}}>
             <div className="icon-wrapper">
                 <Button icon={renderPlay} onClick={handlePlay} />
-
                 <Slider
                     min={0}
                     max={100}

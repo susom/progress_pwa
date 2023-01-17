@@ -52,7 +52,7 @@ export function Home() {
                 width={100} 
                 placement="left" 
                 onClose={()=>setDrawerVisible(false)} 
-                visible={drawerVisible}
+                open={drawerVisible}
                 closable={false}
             >
                 <BackgroundSelection/>
@@ -65,7 +65,7 @@ export function Home() {
                     </hgroup>
                 </Col>
             </Row>
-            <div class='MediaPositioning'>
+            <div className='MediaPositioning'>
             <Row justify="center">
                 <Col xs={24} md={18} lg={16} xl={12}>
                     <Card
@@ -81,7 +81,7 @@ export function Home() {
                         }
                     >
                         <div className='player-wrapper' >
-                            <Button onClick={()=>    setDrawerVisible(true)}>background</Button>
+                            <Button onClick={()=>    setDrawerVisible(true)}>Change Background</Button>
                             <ReactPlayer
                                 ref={player}
                                 className='react-player'
