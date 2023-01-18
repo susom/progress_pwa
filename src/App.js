@@ -7,7 +7,6 @@ import {
 
 import React from 'react';
 import {SessionContextProvider} from "./contexts/Session";
-import BackgroundSelection from "./components/Backgrounds/backgrounds";
 import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';

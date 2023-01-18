@@ -50,7 +50,7 @@ export function Home() {
         <div id="main" className={renderClasses()}>
             <Drawer 
                 width={100} 
-                placement="left" 
+                placement="right" 
                 onClose={()=>setDrawerVisible(false)} 
                 open={drawerVisible}
                 closable={false}
