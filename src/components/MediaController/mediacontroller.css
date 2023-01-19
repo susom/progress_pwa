@@ -1,0 +1,60 @@
+.icon-wrapper {
+    position: relative;
+    padding: 0px 30px;
+}
+
+/* .icon-wrapper .anticon {
+    position: absolute;
+    top: -2px;
+    width: 16px;
+    height: 16px;
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 16px;
+    line-height: 1;
+} */
+
+.icon-wrapper .icon-wrapper-active {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.icon-wrapper .ant-btn:first-child {
+    left: 0;
+    position: absolute;
+    top: -10px;
+}
+
+.icon-wrapper .redo {
+    right: 0;
+    position: absolute;
+    top: -10px;
+}
+
+.icon-wrapper .ant-slider {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.media-wrapper {
+    width: 400px;
+    height: 400px;
+    /* background:rgba(0, 0, 0, 0.1); */
+    /* background-image: url('../../assets/img/AudioPlaceholder.png'); */
+}
+
+/* .media-controller{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+} */
+
+.ant-card-body {
+    padding: 10px !important;
+}
+
+.react-player__preview{
+    background-color: black;
+}
+
+.react-player__shadow{
+    background-color: grey;
+}

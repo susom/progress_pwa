@@ -11,3 +11,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.fire{
+  background:#C6EAF4 url(assets/img/fire.gif) 45% 0% no-repeat;
+  background-size: cover;
+}
+
+.waterfall{
+    background:#C6EAF4 url(assets/img/waterfall.gif) 45% 0% no-repeat;
+    background-size: cover;
+}
+
+.stillblue {
+    background:#C6EAF4 url(assets/img/calm_blue.jpg) 45% 0% no-repeat;
+    background-size: cover;
+}
+
+.winter {
+    background:#C6EAF4 url(assets/img/winter.gif) 45% 0% no-repeat;
+    background-size: cover;
+}
+
+.norway{
+    background:#C6EAF4 url(assets/img/norway.gif) 15% 0% no-repeat;
+    /* background-size:395%; */
+    background-size: cover;
+}
+
+.night{
+    background: #C6EAF4 url(assets/img/nightwater2.gif) 50% 20% no-repeat;
+    background-size: cover;
+}
+
+.beach{
+    background: #C6EAF4 url(assets/img/tropicalbeach.gif) 90% 0% no-repeat;
+    background-size: cover;
+}
+

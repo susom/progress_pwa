@@ -11,7 +11,8 @@ export const SessionContextProvider = ({children}) => {
         splash_viewed : false,
         current_page : [],
         session_start : null,
-        session_end : null
+        session_end : null, 
+        background: 'norway'
     });
 
     return (

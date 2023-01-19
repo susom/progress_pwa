@@ -1,65 +1,114 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState, useRef, useContext} from "react";
+import {SessionContext} from '../../contexts/Session';
+import ReactPlayer from 'react-player';
+import { Card, Col, Row, Button, Drawer } from 'antd';
+import MediaController from "../../components/MediaController";
 import "../../assets/skin/pink.flag/css/jplayer.pink.flag.css";
 import "../../assets/css/view_home.css";
+import mp3 from "../../assets/audio/R01_Beth_wBeats.mp3";
+import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
+import BackgroundSelection from "../../components/Backgrounds";
 
-export function Home(){
-    const navigate = useNavigate();
+export function Home() {
+    const [played, setPlayed] = useState(0)
+    const [playing, setPlaying] = useState(false)
+    const [playbackRate, setPlaybackRate] = useState(1)
+    const [transparent, setTransparent] = useState(true)
+    const [drawerVisible, setDrawerVisible] = useState(false);
 
-    const onClick = () => {
-        navigate(`/`);
+    const context = useContext(SessionContext)
+    const player = useRef();
+    const handlePlayed = (e) => {
+        setPlayed(e.played)
     }
 
+    const handlePlayPause = () => {
+        setPlaying(!playing)
+    }
+
+    const seek = (playedRatio) => player.current.seekTo(playedRatio);
+    const fastForward = () => {
+        if(playbackRate === 1)
+            setPlaybackRate(2)
+        else 
+            setPlaybackRate(1)
+    }
+
+    const onTouch = () => {
+        setTransparent(false)
+        setTimeout(() => {
+            setTransparent(true)
+        }, 5000)
+    }
+
+    const renderTransparentClasses = () => transparent ? `transparent` : 'visible'
+    
+    const renderClasses = () => `panel ${context.data.background}`
+   
     return (
-        <div id="main" className="panel">
-            <hgroup>
-                <h1>Progress App</h1>
-                <h2>Binaural Technology</h2>
-            </hgroup>
 
-            <div className='player'>
-                <div id="jquery_jplayer_1" className="jp-jplayer"></div>
-                <div id="jp_container_1" className="jp-audio" role="application" aria-label="media player">
-                    <div className="jp-type-single">
-                        <h5 id='alias'>Hi, <i></i></h5>
-                        <div className="jp-gui jp-interface">
-                            <div className="jp-volume-controls">
-                              <button className="jp-mute" role="button" tabIndex="0">mute</button>
-                              <button className="jp-volume-max" role="button" tabIndex="0">max volume</button>
-                              <div className="jp-volume-bar">
-                                <div className="jp-volume-bar-value"></div>
-                              </div>
-                            </div>
-                            <div className="jp-controls-holder">
-                                <div className="jp-controls">
-                                    <button className="jp-play" role="button" tabIndex="0"></button>
-                                    <button className="jp-stop" role="button" tabIndex="0">Reset</button>
-                                </div>
-                                <div className="jp-progress">
-                                    <div className="jp-seek-bar">
-                                        <div className="jp-play-bar"></div>
-                                    </div>
-                                </div>
-                                <div className="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-                                <div className="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
-                            </div>
+        <div id="main" className={renderClasses()}>
+            <Drawer 
+                width={100} 
+                placement="right" 
+                onClose={()=>setDrawerVisible(false)} 
+                open={drawerVisible}
+                closable={false}
+            >
+                <BackgroundSelection/>
+            </Drawer>
+            <Row justify="center">
+                <Col span={12}>
+                    <hgroup style={{ marginBottom: '15vh' }}>
+                        <h1>Progress App</h1>
+                        <h2>Binaural Technology</h2>
+                    </hgroup>
+                </Col>
+            </Row>
+            <div className='MediaPositioning'>
+            <Row justify="center">
+                <Col xs={24} md={18} lg={16} xl={12}>
+                    <Card
+                        onMouseDown={onTouch}
+                        onTouchStart={onTouch}
+                        className={renderTransparentClasses()}
+                        cover={
+                            <img
+                                style={{maxWidth: '70px', display:'block', marginLeft:'auto', marginRight: 'auto'}}
+                                alt="example"
+                                src={AudioPlaceholder}
+                            />
+                        }
+                    >
+                        <div className='player-wrapper' >
+                            <Button onClick={()=>    setDrawerVisible(true)}>Change Background</Button>
+                            <ReactPlayer
+                                ref={player}
+                                className='react-player'
+                                url={mp3}
+                                pip={false}
+                                light={false}
+                                width='0%'
+                                height='0%'
+                                onProgress={handlePlayed}
+                                playbackRate={playbackRate}
+                                playing={playing}
+                            />
                         </div>
-                        <div className="jp-details">
-                            <div className="jp-title" aria-label="title">&nbsp;</div>
-                        </div>
-                        <div className="jp-no-solution">
-                            <span>Update Required</span>
-                            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                        </div>
-                        <aside>
-                            <a href="#" className="btn logit">Finish & <span>Upload</span> Listen</a>
-                        </aside>
-                    </div>
-                </div>
+
+                        <MediaController
+                            playing={playing}
+                            playedRatio={played}
+                            handlePlayPause={handlePlayPause}
+                            seek={seek}
+                            fastForward={fastForward}
+                            playbackRate={playbackRate}
+                        />
+                    </Card>
+                </Col>
+            
+            </Row>
             </div>
-
-
         </div>
     )
 }

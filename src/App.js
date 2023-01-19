@@ -5,26 +5,25 @@ import {
   Route,
 } from "react-router-dom";
 
+import React from 'react';
 import {SessionContextProvider} from "./contexts/Session";
-
-import BackgroundSelection from "./components/backgrounds";
-
 import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';
+
 function App() {
   return (
       <SessionContextProvider>
           <BrowserRouter>
-            <div className="view_box">
-              <div className="view_body">
+            <div className="view_box" style={{height:'100%'}}>
+              <div className="view_body" style={{height:'100%'}}>
                 <Routes>
                   <Route path='/' element={<Landing />} />
                   <Route path='/home' element={<Home />} />
                   <Route path='/settings' element={<Settings />} />
                 </Routes>
               </div>
-              <BackgroundSelection/>
+              {/* <BackgroundSelection/> */}
             </div>
           </BrowserRouter>
       </SessionContextProvider>

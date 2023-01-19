@@ -1,10 +1,10 @@
 .view_box{
     text-align:center;
 }
-.view_body{
+/* .view_body{
     margin:0 auto;
     max-width:86vw;
-}
+} */
 
 .player {
     position:relative;
@@ -12,4 +12,18 @@
 
 #jp_container_1{
     width:initial;
+}
+
+.transparent {
+    opacity: 0.7;
+}
+
+.visible {
+    opacity: 1.0;
+}
+
+
+a.waterfall{
+    background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;
+    background-size:cover;
 }
