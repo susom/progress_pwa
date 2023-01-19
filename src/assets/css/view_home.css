@@ -27,3 +27,19 @@ a.waterfall{
     background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;
     background-size:cover;
 }
+
+.MediaPositioning {
+    margin-top: 20%;
+}
+@media (max-width: 768px) {
+    .MediaPositioning {
+      margin-top:auto;
+    }
+  }
+#main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
