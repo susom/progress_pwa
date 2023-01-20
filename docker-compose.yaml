@@ -6,7 +6,8 @@ services:
         restart: always
         stdin_open: true
         ports:
-            - "5555:3000"
+            - "3000:3000"
+            - "9222:9222" # Debug root
         environment:
             - WATCHPACK_POLLING=true
             - FAST_REFRESH=false 

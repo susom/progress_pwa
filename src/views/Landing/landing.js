@@ -1,7 +1,9 @@
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 
-// import "../../assets/css/view_splash.css";
+import {Spin, Space} from 'antd';
+
+import "../../assets/css/view_splash.css";
 export function Landing(){
     const [redirectNow, setRedirectNow] = useState(false);
 
@@ -17,6 +19,12 @@ export function Landing(){
         (
             <div id="splashScreen">
                 <h1>PROGRESS BINAURAL APP 1.0</h1>
+                <Space style={{position: 'relative', top: '140px'}}>
+                    <Spin size="large">
+                        <div className="content" />
+                    </Spin>
+                </Space>
+                
             </div>
         );
 }
