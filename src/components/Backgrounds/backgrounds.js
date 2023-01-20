@@ -1,6 +1,5 @@
 import {useContext} from "react";
 import {SessionContext} from "../../contexts/Session";
-
 import "../../assets/css/backgrounds.css";
 
 function BackgroundSelection (){
@@ -17,8 +16,9 @@ function BackgroundSelection (){
     return (
         <aside id="bgs">
             {/* <a href="#" className="handle">Choose Background</a> */}
-            <a href="#" onClick={onSelect} name="norway" className="bg norway"> </a>
+            {/* <img onClick={()=>console.log('hi')}></img> */}
             <a href="#" onClick={onSelect} name="night" className="bg night"> </a>
+            <a href="#" onClick={onSelect} name="norway" className="bg norway"> </a>
             <a href="#" onClick={onSelect} name="beach" className="bg beach"> </a>
             <a href="#" onClick={onSelect} name="fire" className="bg fire"> </a>
             <a href="#" onClick={onSelect} name="waterfall" className="bg waterfall"> </a>
