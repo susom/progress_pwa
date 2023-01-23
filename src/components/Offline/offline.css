@@ -1,11 +1,10 @@
 
 @media (min-width: 768px) {
-    .ant-drawer-content-wrapper{
+    .offline.ant-drawer-content{
         width: 50% !important;
         left: 25% !important;
+        border-radius: 25px;
+        position: relative;
     }
 
-    .ant-drawer-content {
-      border-radius: 25px;
-    }
 }

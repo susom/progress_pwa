@@ -6,7 +6,7 @@ import MediaController from "../../components/MediaController";
 
 import "../../assets/css/view_home.css";
 import mp3 from "../../assets/audio/R01_Beth_wBeats.mp3";
-import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
+// import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
 import BackgroundSelection from "../../components/Backgrounds";
 
 export function Home() {

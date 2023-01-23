@@ -39,6 +39,7 @@ export default function Offline({ children }) {
                 height="100px"
                 onClose={onClose}
                 open={open}
+                className='offline'
             >
                 <Row align="middle" justify='center'>
                     <img style={{display: 'inline', marginRight: '35px'}} width={40} src={wifi}></img>
