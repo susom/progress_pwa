@@ -37,8 +37,6 @@
 .media-wrapper {
     width: 400px;
     height: 400px;
-    /* background:rgba(0, 0, 0, 0.1); */
-    /* background-image: url('../../assets/img/AudioPlaceholder.png'); */
 }
 
 /* .media-controller{
@@ -57,4 +55,8 @@
 
 .react-player__shadow{
     background-color: grey;
+}
+
+.play_text {
+    
 }

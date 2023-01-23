@@ -10,10 +10,6 @@
     position:relative;
 }
 
-#jp_container_1{
-    width:initial;
-}
-
 .transparent {
     opacity: 0.7;
 }
@@ -22,7 +18,20 @@
     opacity: 1.0;
 }
 
+.AppTitle{
+    margin-top:20px;
+}
 
+.AppTitle h1 {
+    margin-bottom:10px;
+}
+
+.AppTitle h1, .AppTitle h2{
+    text-shadow: 1px 1px 1px #000;
+    font-kerning: auto;
+    margin:0;
+    color:#569681
+}
 a.waterfall{
     background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;
     background-size:cover;

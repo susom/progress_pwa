@@ -24,12 +24,22 @@ html, body, #root, #root>div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(18px + 2vmin);
   color: white;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.change_background {
+  background:#7CAFA4;
+  border:none;
+  text-transform: uppercase;
+  color:#fff;
+  margin:10px 0;
+  text-shadow:1px 1px 1px #000;
+  font-size: 88%;
 }
 
 @keyframes App-logo-spin {
