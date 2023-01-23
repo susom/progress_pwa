@@ -1,6 +1,10 @@
 language: node_js
 node_js: 
   - 16
+# safelist
+branches:
+  only:
+  - main
 env:
   global:
     - CLOUD_RUN_REGION=us-west1

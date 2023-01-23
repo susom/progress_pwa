@@ -7,7 +7,7 @@ This project has been containerized in Docker for development and deployed on Ap
 To run in development: 
 1. `docker compose build`
 2. `docker compose up`
-3. Navigate to localhost:5555
+3. Navigate to localhost:3000
 
 
 

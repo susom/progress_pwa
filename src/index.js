@@ -5,11 +5,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-
+import Offline from './components/Offline/offline';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App />
+    <Offline>
+        <App />
+    </Offline>
 );
 
 // If you want your app to work offline and load faster, you can change

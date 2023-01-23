@@ -3,10 +3,10 @@ import {SessionContext} from '../../contexts/Session';
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
 import MediaController from "../../components/MediaController";
-import "../../assets/skin/pink.flag/css/jplayer.pink.flag.css";
+
 import "../../assets/css/view_home.css";
 import mp3 from "../../assets/audio/R01_Beth_wBeats.mp3";
-import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
+// import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
 import BackgroundSelection from "../../components/Backgrounds";
 
 export function Home() {
@@ -50,7 +50,7 @@ export function Home() {
         <div id="main" className={renderClasses()}>
             <Drawer 
                 width={100} 
-                placement="right" 
+                placement="right"
                 onClose={()=>setDrawerVisible(false)} 
                 open={drawerVisible}
                 closable={false}
@@ -59,8 +59,8 @@ export function Home() {
             </Drawer>
             <Row justify="center">
                 <Col span={12}>
-                    <hgroup style={{ marginBottom: '15vh' }}>
-                        <h1>Progress App</h1>
+                    <hgroup style={{ marginBottom: '15vh' }} className="AppTitle">
+                        <h1>Calm Tool - Relief App</h1>
                         <h2>Binaural Technology</h2>
                     </hgroup>
                 </Col>
@@ -72,16 +72,8 @@ export function Home() {
                         onMouseDown={onTouch}
                         onTouchStart={onTouch}
                         className={renderTransparentClasses()}
-                        cover={
-                            <img
-                                style={{maxWidth: '70px', display:'block', marginLeft:'auto', marginRight: 'auto'}}
-                                alt="example"
-                                src={AudioPlaceholder}
-                            />
-                        }
                     >
                         <div className='player-wrapper' >
-                            <Button onClick={()=>    setDrawerVisible(true)}>Change Background</Button>
                             <ReactPlayer
                                 ref={player}
                                 className='react-player'
@@ -104,7 +96,10 @@ export function Home() {
                             fastForward={fastForward}
                             playbackRate={playbackRate}
                         />
+
+                        <p className="play_text">Press the play button to begin your session.</p>
                     </Card>
+                    <Button onClick={()=> setDrawerVisible(true)} className="change_background">Change Background</Button>
                 </Col>
             
             </Row>

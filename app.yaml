@@ -6,9 +6,27 @@ service: default
 
 handlers:
   # Serve all static files with url ending with a file extension
-  - url: /(.*\..+)$
+  - url: /service-worker.js
+    static_files: build/service-worker.js
+    upload: build/service-worker.js
+    mime_type: application/javascript
+    expiration: 0m
+
+  - url: /(.*\.js)$
+    secure: always
     static_files: build/\1
-    upload: build/(.*\..+)$
+    upload: build/.*\.js$
+    mime_type: application/javascript
+  
+  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3))$
+    secure: always
+    static_files: build/\1
+    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3)$
+  
+  # - url: /(.*\..+)$
+  #   static_files: build/\1
+  #   upload: build/(.*\..+)$
+  
   # Catch all handler to index.html
   - url: /.*
     static_files: build/index.html

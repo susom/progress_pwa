@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/ios/64.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -15,7 +15,18 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="audio" href="%PUBLIC_URL%/R01_Beth_wBeats.mp3" />
-    <link rel=”apple-touch-icon” href=”PUBLIC_URL%/logo.png”>
+    <!-- iOS, IPadOS app icon sizes -->
+    <link rel=”apple-touch-icon” sizes="120x120" href=”PUBLIC_URL%/ios/120.png”>
+    <link rel=”apple-touch-icon” sizes="180x180" href=”PUBLIC_URL%/ios/180.png”>
+    <link rel=”apple-touch-icon” sizes="167x167" href=”PUBLIC_URL%/ios/167.png”>
+    <link rel=”apple-touch-icon” sizes="152x152" href=”PUBLIC_URL%/ios/152.png”>
+    <link rel=”apple-touch-icon” sizes="80x80" href=”PUBLIC_URL%/ios/80.png”>
+    <link rel=”apple-touch-icon” sizes="120x120" href=”PUBLIC_URL%/ios/120.png”>
+    <link rel=”apple-touch-icon” sizes="58x58" href=”PUBLIC_URL%/ios/58.png”>
+    <link rel=”apple-touch-icon” sizes="76x76" href=”PUBLIC_URL%/ios/76.png”>
+    <link rel=”apple-touch-icon” sizes="114x114" href=”PUBLIC_URL%/ios/114.png”>
+    
+    <link rel=”apple-touch-icon” href=”PUBLIC_URL%/apple-touch-icon.png”>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -30,8 +41,6 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js" integrity="sha512-g0etrk7svX8WYBp+ZDIqeenmkxQSXjRDTr08ie37rVFc99iXFGxmD0/SCt3kZ6sDNmr8sR0ISHkSAc/M8rQBqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" integrity="sha512-qH+R6YL4/40iiIrnN5aNZ1sEeEalNAdnzP9jfsxFPBdIslTkwUddkSazjVWhJ3f/3Y26QF6aql0xeneuVw0h/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div id="root"></div>
     
     <!--
@@ -44,59 +53,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-
-    <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $(function() {
-    //     FastClick.attach(document.body);
-    //   });
-
-    //   $("#jquery_jplayer_1").jPlayer({
-    //     ready: function () {
-    //       $(this).jPlayer("setMedia", {
-    //         title   : "Relaxation Resource Binaural Technology",
-    //         m4a     : "assets/audio/R01_Beth_wBeats.mp3"
-    //       });
-    //       console.log("jplayer loaded");
-
-    //     },
-    //     cssSelectorAncestor : "#jp_container_1",
-    //     swfPath             : "/js",
-    //     supplied            : "m4a, oga",
-    //     useStateClassSkin   : true,
-    //     autoBlur            : false,
-    //     smoothPlayBar       : true,
-    //     keyEnabled          : true,
-    //     remainingDuration   : true,
-    //     toggleDuration      : true
-    //   });
-
-    //   //ADD EVENTS TO THE PLAY AND PAUSE BUTTON
-    //   $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) {
-    //     // Add a listener to report the time play began
-    //     // console.log("play start! : current playtime " + app.cache.sessionPlayTime);
-    //     // app.startTimer();
-    //   });
-
-    //   $("#jquery_jplayer_1").bind($.jPlayer.event.pause, function(event) {
-    //     // Add a listener to handle pausing
-    //     // console.log("play pause! : current playtime " + app.cache.sessionPlayTime);
-    //     // app.stopTimer();
-    //   });
-
-    //   $("#jquery_jplayer_1").bind($.jPlayer.event.ended, function(event) {
-    //     // Add a listener to handle reaching the end
-    //     $(".logit").click();
-    //   });
-
-    //   $(".jp-play").click(function(){
-    //     $(this).toggleClass("pause");
-    //   });
-
-    //   $(".jp-stop").click(function(){
-    //     $(".jp-play").removeClass("pause");
-    //   });
-    // });
-    </script>
   </body>
 </html>
