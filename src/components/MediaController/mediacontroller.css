@@ -45,6 +45,10 @@
     bottom: 0;
 } */
 
+.ant-card-bordered {
+    margin:auto 15px;
+}
+
 .ant-card-body {
     padding: 10px !important;
 }
