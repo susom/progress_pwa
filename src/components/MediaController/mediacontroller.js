@@ -8,8 +8,17 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
     const onAfterChange = (e) => {
-        setValue(e)
-        seek(e / 100)
+        console.log(e)
+        if(e){
+            let formatter = new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,      
+                maximumFractionDigits: 3,
+            });
+            console.log(formatter.format(e/100))
+            setValue(e)
+            seek(formatter.format(e/100))
+        }
+        
         setProgressEnabled(true)
     }
     const onChange = (e) => {
