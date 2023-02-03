@@ -11,18 +11,24 @@ handlers:
     upload: build/service-worker.js
     mime_type: application/javascript
     expiration: 0m
+    http-headers:
+      Accept-Ranges: bytes
 
   - url: /(.*\.js)$
     secure: always
     static_files: build/\1
     upload: build/.*\.js$
     mime_type: application/javascript
+    http-headers:
+      Accept-Ranges: bytes
   
   - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a))$
     secure: always
     static_files: build/\1
     upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a)$
-  
+    http-headers:
+      Accept-Ranges: bytes
+
   # - url: /(.*\..+)$
   #   static_files: build/\1
   #   upload: build/(.*\..+)$
@@ -31,3 +37,5 @@ handlers:
   - url: /.*
     static_files: build/index.html
     upload: build/index.html
+    http-headers:
+      Accept-Ranges: bytes
