@@ -11,8 +11,6 @@ handlers:
     upload: build/service-worker.js
     mime_type: application/javascript
     expiration: 0m
-    http-headers:
-      Accept-Ranges: bytes
 
   - url: /(.*\.js)$
     secure: always
