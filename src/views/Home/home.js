@@ -26,7 +26,10 @@ export function Home() {
         setPlaying(!playing)
     }
 
-    const seek = (playedRatio) => player.current.seekTo(playedRatio);
+    const seek = (playedRatio) => {
+        console.log(playedRatio, parseFloat(playedRatio))
+        player.current.seekTo(parseFloat(playedRatio))
+    };
     const fastForward = () => {
         if(playbackRate === 1)
             setPlaybackRate(2)

@@ -12,7 +12,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
         if(e){
             let formatter = new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 2,      
-                maximumFractionDigits: 3,
+                maximumFractionDigits: 2,
             });
             console.log(formatter.format(e/100))
             setValue(e)
