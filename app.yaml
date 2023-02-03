@@ -40,5 +40,5 @@ handlers:
   - url: /.*
     static_files: build/index.html
     upload: build/index.html
-    http-headers:
+    http_headers:
       Accept-Ranges: bytes
