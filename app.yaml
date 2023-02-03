@@ -18,10 +18,10 @@ handlers:
     upload: build/.*\.js$
     mime_type: application/javascript
   
-  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3))$
+  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a))$
     secure: always
     static_files: build/\1
-    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3)$
+    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a)$
   
   # - url: /(.*\..+)$
   #   static_files: build/\1
