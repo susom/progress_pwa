@@ -12,7 +12,7 @@ export const SessionContextProvider = ({children}) => {
         current_page : [],
         session_start : null,
         session_end : null, 
-        background: 'night'
+        background: 'stillblue'
     });
 
     return (

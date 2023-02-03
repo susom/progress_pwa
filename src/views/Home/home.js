@@ -5,7 +5,7 @@ import { Card, Col, Row, Button, Drawer } from 'antd';
 import MediaController from "../../components/MediaController";
 
 import "../../assets/css/view_home.css";
-import mp3 from "../../assets/audio/R01_Beth_wBeats.mp3";
+import mp3 from "../../assets/audio/R01_Beth_wBeats.m4a";
 // import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
 import BackgroundSelection from "../../components/Backgrounds";
 
