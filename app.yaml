@@ -18,13 +18,18 @@ handlers:
     upload: build/.*\.js$
     mime_type: application/javascript
 
-  
-  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a))$
+  - url: /(.*\.m4a)$
     secure: always
     static_files: build/\1
-    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3|m4a)$
+    upload: build/.*\.m4a$
     http-headers:
       Accept-Ranges: bytes
+      
+  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3))$
+    secure: always
+    static_files: build/\1
+    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3)$
+    
 
   # - url: /(.*\..+)$
   #   static_files: build/\1
