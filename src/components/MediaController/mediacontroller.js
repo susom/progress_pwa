@@ -8,13 +8,11 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
     const onAfterChange = (e) => {
-        console.log(e)
         if(e){
             let formatter = new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 2,      
                 maximumFractionDigits: 2,
             });
-            console.log(formatter.format(e/100))
             setValue(e)
             seek(formatter.format(e/100))
         }
@@ -25,9 +23,12 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
         setProgressEnabled(false)
         setValue(e)
     }
+    
     useEffect(() => {
-        if (progressEnabled)
+        if (progressEnabled){
             setValue(playedRatio * 100)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playedRatio])
 
     

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useContext} from "react";
-import {SessionContext} from '../../contexts/Session';
+import React, { useState, useRef, useContext } from "react";
+import { SessionContext } from '../../contexts/Session';
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
 import MediaController from "../../components/MediaController";
@@ -27,13 +27,12 @@ export function Home() {
     }
 
     const seek = (playedRatio) => {
-        console.log(playedRatio, parseFloat(playedRatio))
         player.current.seekTo(parseFloat(playedRatio))
     };
     const fastForward = () => {
-        if(playbackRate === 1)
+        if (playbackRate === 1)
             setPlaybackRate(2)
-        else 
+        else
             setPlaybackRate(1)
     }
 
@@ -45,20 +44,19 @@ export function Home() {
     }
 
     const renderTransparentClasses = () => transparent ? `transparent` : 'visible'
-    
-    const renderClasses = () => `panel ${context.data.background}`
-   
-    return (
 
+    const renderClasses = () => `panel ${context.data.background}`
+
+    return (
         <div id="main" className={renderClasses()}>
-            <Drawer 
-                width={100} 
+            <Drawer
+                width={100}
                 placement="right"
-                onClose={()=>setDrawerVisible(false)} 
+                onClose={() => setDrawerVisible(false)}
                 open={drawerVisible}
                 closable={false}
             >
-                <BackgroundSelection/>
+                <BackgroundSelection />
             </Drawer>
             <Row justify="center">
                 <Col span={12}>
@@ -69,43 +67,43 @@ export function Home() {
                 </Col>
             </Row>
             <div className='MediaPositioning'>
-            <Row justify="center">
-                <Col xs={24} md={18} lg={16} xl={12}>
-                    <Card
-                        onMouseDown={onTouch}
-                        onTouchStart={onTouch}
-                        className={renderTransparentClasses()}
-                    >
-                        <div className='player-wrapper' >
-                            <ReactPlayer
-                                ref={player}
-                                className='react-player'
-                                url={mp3}
-                                pip={false}
-                                light={false}
-                                width='0%'
-                                height='0%'
-                                onProgress={handlePlayed}
-                                playbackRate={playbackRate}
+                <Row justify="center">
+                    <Col xs={24} md={18} lg={16} xl={12}>
+                        <Card
+                            onMouseDown={onTouch}
+                            onTouchStart={onTouch}
+                            className={renderTransparentClasses()}
+                        >
+                            <div className='player-wrapper' >
+                                <ReactPlayer
+                                    ref={player}
+                                    className='react-player'
+                                    url={mp3}
+                                    pip={false}
+                                    light={false}
+                                    width='0%'
+                                    height='0%'
+                                    onProgress={handlePlayed}
+                                    playbackRate={playbackRate}
+                                    playing={playing}
+                                />
+                            </div>
+
+                            <MediaController
                                 playing={playing}
+                                playedRatio={played}
+                                handlePlayPause={handlePlayPause}
+                                seek={seek}
+                                fastForward={fastForward}
+                                playbackRate={playbackRate}
                             />
-                        </div>
 
-                        <MediaController
-                            playing={playing}
-                            playedRatio={played}
-                            handlePlayPause={handlePlayPause}
-                            seek={seek}
-                            fastForward={fastForward}
-                            playbackRate={playbackRate}
-                        />
+                            <p className="play_text">Press the play button to begin your session.</p>
+                        </Card>
+                        <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
+                    </Col>
 
-                        <p className="play_text">Press the play button to begin your session.</p>
-                    </Card>
-                    <Button onClick={()=> setDrawerVisible(true)} className="change_background">Change Background</Button>
-                </Col>
-            
-            </Row>
+                </Row>
             </div>
         </div>
     )

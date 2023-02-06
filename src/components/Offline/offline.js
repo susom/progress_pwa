@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Drawer, Col, Row } from 'antd';
+import { Drawer, Row } from 'antd';
 import wifi from '../../assets/img/wifi-connection-offline-icon.png'
 import './offline.css'
 
@@ -33,7 +33,6 @@ export default function Offline({ children }) {
     return (
         <>
             <Drawer
-                // title="You are offline Please check your internet connection."
                 placement="top"
                 closable={false}
                 height="100px"
@@ -42,7 +41,7 @@ export default function Offline({ children }) {
                 className='offline'
             >
                 <Row align="middle" justify='center'>
-                    <img style={{display: 'inline', marginRight: '35px'}} width={40} src={wifi}></img>
+                    <img alt='wifi' style={{display: 'inline', marginRight: '35px'}} width={40} src={wifi}></img>
                     <div style={{display: 'inline'}}>
                         <h3>You are offline!</h3>
                         <p>Please check your internet connection.</p>
