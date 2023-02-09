@@ -28,15 +28,10 @@ handlers:
     http_headers:
       Accept-Ranges: bytes
       
-  - url: /(.*\.(css|png|jpg|svg|ico|gif|mp3))$
+  - url: /(.*\.(css|png|jpg|svg|ico|gif|mp3|json))$
     secure: always
     static_files: build/\1
-    upload: build/.*\.(css|png|jpg|svg|ico|gif|mp3)$
-
-  - url: /(.*\.json)
-    mime_type: application/json
-    static_files: static/\1
-    upload: static/(.*\.json)
+    upload: build/.*\.(css|png|jpg|svg|ico|gif|mp3|json)$
 
   # Catch all handler to index.html
   - url: /(.+)/
