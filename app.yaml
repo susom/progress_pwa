@@ -14,7 +14,11 @@ handlers:
     upload: build/service-worker.js
     mime_type: application/javascript
     expiration: 0m
-
+  
+  - url: /manifest.json
+    static_files: build/manifest.json
+    upload: build/manifest.json
+  
   - url: /(.*\.js)$
     secure: always
     static_files: build/\1
@@ -38,7 +42,8 @@ handlers:
   # - url: /(.*\..+)$
   #   static_files: build/\1
   #   upload: build/(.*\..+)$
-  
+
+
   # Catch all handler to index.html
   - url: /.*
     static_files: build/index.html
