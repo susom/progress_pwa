@@ -28,17 +28,18 @@ handlers:
     http_headers:
       Accept-Ranges: bytes
       
-  - url: /(.*\.(css|png|jpg|svg|ico|gif|mp3|json))$
+  - url: /(.*\.(css|map|png|jpg|svg|ico|json|gif|mp3))$
     secure: always
     static_files: build/\1
-    upload: build/.*\.(css|png|jpg|svg|ico|gif|mp3|json)$
+    upload: build/.*\.(css|map|png|jpg|svg|ico|json|gif|mp3)$
+    http_headers:
+      Accept_Ranges: bytes
 
+  # - url: /(.*\..+)$
+  #   static_files: build/\1
+  #   upload: build/(.*\..+)$
+  
   # Catch all handler to index.html
-  - url: /(.+)/
-    static_files: static/\1/index.html
-    upload: static/(.+)/index.html
-
-  # site root
-  - url: /
-    static_files: static/index.html
-    upload: static/index.html
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
