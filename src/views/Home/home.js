@@ -1,12 +1,12 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
+import axios from 'axios';
 import MediaController from "../../components/MediaController";
 
 import "../../assets/css/view_home.css";
 import mp3 from "../../assets/audio/R01_Beth_wBeats.m4a";
-// import AudioPlaceholder from '../../assets/img/music-notes-fill.svg';
 import BackgroundSelection from "../../components/Backgrounds";
 
 export function Home() {
@@ -18,6 +18,22 @@ export function Home() {
 
     const context = useContext(SessionContext)
     const player = useRef();
+
+    useEffect(() => {
+        let {hostname} = window.location
+        const url = hostname === 'localhost' ? 'http://localhost:8080/analyze' : process.env.REACT_APP_BACKEND_URL
+        
+        axios({
+            method: 'post',
+            url: url,
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then((res) => console.log(res))
+        .catch(err=>console.log(err))
+    }, [])
+
+
     const handlePlayed = (e) => {
         setPlayed(e.played)
     }
