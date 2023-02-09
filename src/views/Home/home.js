@@ -19,19 +19,19 @@ export function Home() {
     const context = useContext(SessionContext)
     const player = useRef();
 
-    useEffect(() => {
-        let {hostname} = window.location
-        const url = hostname === 'localhost' ? 'http://localhost:8080/analyze' : process.env.REACT_APP_BACKEND_URL
+    // useEffect(() => {
+    //     let {hostname} = window.location
+    //     const url = hostname === 'localhost' ? 'http://localhost:8080/analyze' : process.env.REACT_APP_BACKEND_URL
         
-        axios({
-            method: 'post',
-            url: url,
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        }).then((res) => console.log(res))
-        .catch(err=>console.log(err))
-    }, [])
+    //     axios({
+    //         method: 'post',
+    //         url: url,
+    //         headers: {
+    //             "Content-Type": 'application/json'
+    //         }
+    //     }).then((res) => console.log(res))
+    //     .catch(err=>console.log(err))
+    // }, [])
 
 
     const handlePlayed = (e) => {
