@@ -11,7 +11,10 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import {RangeRequestsPlugin} from 'workbox-range-requests';
+import {CacheableResponsePlugin} from 'workbox-cacheable-response';
+
 
 clientsClaim();
 
@@ -70,3 +73,92 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+// var version = '2'
+// registerRoute(
+//   /.*\.m4a/,
+//   cacheFirst({
+//     cacheName: 'your-cache-name-here',
+//     plugins: [
+//       new workbox.cacheableResponse.Plugin({statuses: [200]}),
+//       new workbox.rangeRequests.Plugin(),
+//     ],
+//   }),
+// );
+registerRoute(
+  ({url, request, event}) => {
+    const {destination} = request;
+    console.log('url', url)
+    console.log('request', request)
+    console.log('event', event)
+    return destination === 'video' || destination === 'audio'
+  },
+  new CacheFirst({
+    cacheName: 'v1-cache-audio',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [200]
+      }),
+      new RangeRequestsPlugin(),
+    ],
+  }),
+);
+
+// var version = 2;
+// var staticCacheName = `cache-v${version}`
+// self.addEventListener('fetch', function(event) {
+//   var url = new URL(event.request.url);
+//   if (url.pathname.match(/^\/((assets|images)\/|manifest.json$)/)) {
+//     if (event.request.headers.get('range')) {
+//       event.respondWith(returnRangeRequest(event.request, staticCacheName));
+//     } else {
+//       event.respondWith(returnFromCacheOrFetch(event.request, staticCacheName));
+//     }
+//   }
+//   // other strategies
+// });
+
+// function returnRangeRequest(request, cacheName) {
+//   return caches
+//     .open(cacheName)
+//     .then(function(cache) {
+//       return cache.match(request.url);
+//     })
+//     .then(function(res) {
+//       if (!res) {
+//         return fetch(request)
+//           .then(res => {
+//             const clonedRes = res.clone();
+//             return caches
+//               .open(cacheName)
+//               .then(cache => cache.put(request, clonedRes))
+//               .then(() => res);
+//           })
+//           .then(res => {
+//             return res.arrayBuffer();
+//           });
+//       }
+//       return res.arrayBuffer();
+//     })
+//     .then(function(arrayBuffer) {
+//       const bytes = /^bytes\=(\d+)\-(\d+)?$/g.exec(
+//         request.headers.get('range')
+//       );
+//       if (bytes) {
+//         const start = Number(bytes[1]);
+//         const end = Number(bytes[2]) || arrayBuffer.byteLength - 1;
+//         return new Response(arrayBuffer.slice(start, end + 1), {
+//           status: 206,
+//           statusText: 'Partial Content',
+//           headers: [
+//             ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
+//           ]
+//         });
+//       } else {
+//         return new Response(null, {
+//           status: 416,
+//           statusText: 'Range Not Satisfiable',
+//           headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
+//         });
+//       }
+//     });
+// }
