@@ -84,24 +84,24 @@ self.addEventListener('message', (event) => {
 //     ],
 //   }),
 // );
-registerRoute(
-  ({url, request, event}) => {
-    const {destination} = request;
-    console.log('url', url)
-    console.log('request', request)
-    console.log('event', event)
-    return destination === 'video' || destination === 'audio'
-  },
-  new CacheFirst({
-    cacheName: 'v1-cache-audio',
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [200]
-      }),
-      new RangeRequestsPlugin(),
-    ],
-  }),
-);
+// registerRoute(
+//   ({url, request, event}) => {
+//     const {destination} = request;
+//     console.log('url', url)
+//     console.log('request', request)
+//     console.log('event', event)
+//     return destination === 'video' || destination === 'audio'
+//   },
+//   new CacheFirst({
+//     cacheName: 'v1-cache-audio',
+//     plugins: [
+//       new CacheableResponsePlugin({
+//         statuses: [200]
+//       }),
+//       new RangeRequestsPlugin(),
+//     ],
+//   }),
+// );
 
 // var version = 2;
 // var staticCacheName = `cache-v${version}`
