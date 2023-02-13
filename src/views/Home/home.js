@@ -15,6 +15,8 @@ export function Home() {
     const [playbackRate, setPlaybackRate] = useState(1)
     const [transparent, setTransparent] = useState(true)
     const [drawerVisible, setDrawerVisible] = useState(false);
+    const [timeInterval, setTimeInterval] = useState(0);
+    const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
 
     const context = useContext(SessionContext)
     const player = useRef();
@@ -22,7 +24,7 @@ export function Home() {
     // useEffect(() => {
     //     let {hostname} = window.location
     //     const url = hostname === 'localhost' ? 'http://localhost:8080/analyze' : process.env.REACT_APP_BACKEND_URL
-        
+    //
     //     axios({
     //         method: 'post',
     //         url: url,
@@ -32,6 +34,27 @@ export function Home() {
     //     }).then((res) => console.log(res))
     //     .catch(err=>console.log(err))
     // }, [])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if(playing){
+                setTimeInterval(timeInterval + 1);
+                setFormatedTimeInterval(formatTimeInterval(timeInterval));
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [timeInterval,playing]);
+
+
+    const formatTimeInterval = (total_seconds) => {
+        const date = new Date(null);
+        date.setSeconds(total_seconds); // specify value for SECONDS here
+        const result = date.toISOString().slice(11, 19);
+        return result;
+    }
 
 
     const handlePlayed = (e) => {
@@ -74,8 +97,8 @@ export function Home() {
             >
                 <BackgroundSelection />
             </Drawer>
-            <Row justify="center">
-                <Col span={12}>
+            <Row justify="center" className={`titleBar ${playing ? "playing" : ""}`}>
+                <Col>
                     <hgroup style={{ marginBottom: '15vh' }} className="AppTitle">
                         <h1>Calm Tool - Relief App</h1>
                         <h2>Binaural Technology</h2>
@@ -114,7 +137,14 @@ export function Home() {
                                 playbackRate={playbackRate}
                             />
 
-                            <p className="play_text">Press the play button to begin your session.</p>
+
+                            {
+                                !playing
+                                    ? <p className="play_text">Press the play button to begin your session.</p>
+                                    : <p className="play_text">Now playing. Relax. <br/><span className="time_interval">{formatedTimeInterval}</span></p>
+                            }
+
+
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
                     </Col>
