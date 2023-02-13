@@ -140,11 +140,13 @@ export function Home() {
 
                             {
                                 !playing
-                                    ? <p className="play_text">Press the play button to begin your session.</p>
-                                    : <p className="play_text">Now playing. Relax. <br/><span className="time_interval">{formatedTimeInterval}</span></p>
+                                    ? <p className="play_text">Press the play button to {timeInterval ? "continue" : "begin"} your session.</p>
+                                    : <p className="play_text">Now playing. Relax.</p>
                             }
 
-
+                            {
+                                playing || timeInterval ? <p className="play_text">Session Duration : <span className="time_interval">{formatedTimeInterval}</span></p> : ""
+                            }
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
                     </Col>
