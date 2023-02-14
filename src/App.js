@@ -7,12 +7,15 @@ import {
 
 import React from 'react';
 import {SessionContextProvider} from "./contexts/Session";
+import {DatabaseContextProvider} from "./contexts/Database";
+
 import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';
 
 function App() {
   return (
+      <DatabaseContextProvider>
       <SessionContextProvider>
           <BrowserRouter>
             <div className="view_box" style={{height:'100%'}}>
@@ -27,6 +30,7 @@ function App() {
             </div>
           </BrowserRouter>
       </SessionContextProvider>
+      </DatabaseContextProvider>
   );
 }
 

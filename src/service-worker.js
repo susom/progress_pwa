@@ -15,6 +15,9 @@ import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 import {RangeRequestsPlugin} from 'workbox-range-requests';
 import {CacheableResponsePlugin} from 'workbox-cacheable-response';
 
+// Your service worker needs to import dexie and you should declare your db within the service worker itself or in a script that it will import.
+// You can also use es6 imports and compile the service worker using webpack but in any case the db instance has to live within the service worker. You can also have another db instance in the DOM that talks to the same DB.
+import { db_audios } from "./database/db"
 
 clientsClaim();
 
@@ -22,7 +25,16 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
-precacheAndRoute(self.__WB_MANIFEST);
+
+//precacheAndRoute(self.__WB_MANIFEST);
+
+// This will filter out all manifest entries with URLs ending in .jpg
+// Adjust the criteria as needed.
+//https://stackoverflow.com/questions/67118051/filtering-out-assets-from-precaching-in-create-react-app
+const filteredManifest = self.__WB_MANIFEST.filter((entry) => {
+    return !entry.url.endsWith('.m4a');
+});
+precacheAndRoute(filteredManifest);
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
@@ -57,19 +69,81 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: 'images',
     plugins: [
-      // Ensure that once this runtime cache reaches a maximum size the
-      // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
+        // Ensure that once this runtime cache reaches a maximum size the
+        // least-recently used images are removed.
+        new ExpirationPlugin({ maxEntries: 100 }),
+        // Only requests that return with a 200 status are cached
+        new CacheableResponsePlugin({
+            statuses: [200],
+        }),
     ],
   })
 );
 
-// This allows the web app to trigger skipWaiting via
-// registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+//TODO REFACTOR TO GENERALIZE , BUT THIS WORKS FOR NOW
+async function fetchCacheAudio(url, title){
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data from URL: ${url}`);
+        }
+
+        const data = await response.blob();
+
+        //has data! , stuff it in IndexDB
+        const audio = {
+            title: title,
+            data: data
+        };
+        db_audios.files.put(audio);
+
+        console.log("4a inside the network fetch to get m4a file, return the blob", data);
+
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+async function getAudioFileByTitle(title, event) {
+    const audioRecord = await db_audios.files.where({ title: title }).first();
+    console.log("2 inside getAudioFileByTitle check indexDb for file", audioRecord);
+
+    if(!audioRecord){
+        console.log("3 none found, so fetch from network");
+        let audioBlob = await fetchCacheAudio(event.request, title);
+
+        console.log("4b fetched data , cached in indexDB, returning the blob itself", audioBlob);
+        return new Response(audioBlob, {
+            headers: {
+                "Content-Type": "audio/mpeg"
+            }
+        });
+    }else{
+        console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data);
+        return new Response(audioRecord.data, {
+            headers: {
+                "Content-Type": "audio/mpeg"
+            }
+        });
+    }
+}
+
+self.addEventListener('fetch', function(event) {
+    const url       = new URL(event.request.url);
+    const fileName  = url.pathname.split('/').pop();
+
+    if (fileName.indexOf('R01_Beth_wBeats') !== -1) {
+        console.log("1 found fileName partial = R01_Beth_wBeats", fileName);
+        event.respondWith(
+            new Promise(async (resolve) => {
+                let response = await getAudioFileByTitle(fileName, event);
+                console.log("5 , should return a response object eventually", response);
+                resolve(response);
+            })
+        );
+    }else{
+        event.respondWith(fetch(event.request));
+    }
 });
 
 // Any other custom service worker logic can go here.

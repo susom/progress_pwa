@@ -1,5 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
+import { DatabaseContext } from '../../contexts/Database';
+
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
 import axios from 'axios';
@@ -16,9 +18,11 @@ export function Home() {
     const [transparent, setTransparent] = useState(true)
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [timeInterval, setTimeInterval] = useState(0);
+    const [projectName, setProjectName] = useState("Calm Tool - Relief App");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
 
-    const context = useContext(SessionContext)
+    const database = useContext(DatabaseContext);
+    const context = useContext(SessionContext);
     const player = useRef();
 
     // useEffect(() => {
@@ -100,7 +104,7 @@ export function Home() {
             <Row justify="center" className={`titleBar ${playing ? "playing" : ""}`}>
                 <Col>
                     <hgroup style={{ marginBottom: '15vh' }} className="AppTitle">
-                        <h1>Calm Tool - Relief App</h1>
+                        <h1>{projectName}</h1>
                         <h2>Binaural Technology</h2>
                     </hgroup>
                 </Col>
