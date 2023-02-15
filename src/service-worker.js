@@ -80,113 +80,231 @@ registerRoute(
   })
 );
 
-async function fetchCacheAudio(event, title){
-    try {
-        const response = await fetch(event.request, {headers: {'Range': 'bytes=0-'}});
-        if (!response.ok) {
-            throw new Error(`Failed to fetch data from URL: ${event.request}`);
-        }
 
-        let responseClone   = response.clone();
-        const data_clone    = await responseClone.blob();
 
-        //has data! , stuff it in IndexDB
-        const audio = {
-            title: title,
-            data: data_clone
-        };
-        db_audios.files.put(audio);
 
-        console.log("4a inside the network fetch to get m4a file, clone response BLOB to cache in indexDB, return Response object for original response blob", data_clone);
+// async function fetchCacheAudio(event, title){
+//     try {
+//         const response = await fetch(event.request, {headers: {'Range': 'bytes=0-'}});
+//         if (!response.ok) {
+//             throw new Error(`Failed to fetch data from URL: ${event.request}`);
+//         }
 
-        var headers = {
-            'Content-Type': 'audio/mpeg',
-            'Accept-Ranges': 'bytes',
-            'Content-Length': response.headers.get('Content-Length')
-        };
+//         let responseClone   = response.clone();
+//         const data_clone    = await responseClone.blob();
 
-        // Set the Content-Range header to enable byte-range requests in Safari
-        var rangeHeader = event.request.headers.get('range');
+//         //has data! , stuff it in IndexDB
+//         const audio = {
+//             title: title,
+//             data: data_clone
+//         };
+//         db_audios.files.put(audio);
 
-        if (rangeHeader) {
-            var totalSize   = response.headers.get('Content-Length');
-            var range       = rangeHeader.match(/(\d+)-(\d*)/);
-            var start       = parseInt(range[1], 10);
-            var end         = range[2] ? parseInt(range[2], 10) : totalSize - 1;
-            var chunkSize   = end - start + 1;
+//         console.log("4a inside the network fetch to get m4a file, clone response BLOB to cache in indexDB, return Response object for original response blob", data_clone);
 
-            headers['Content-Range'] = 'bytes ' + start + '-' + end + '/' + totalSize;
-            headers['Content-Length'] = chunkSize;
+//         var headers = {
+//             'Content-Type': 'audio/mpeg',
+//             'Accept-Ranges': 'bytes',
+//             'Content-Length': response.headers.get('Content-Length')
+//         };
 
-            console.log("so if rangeheader , then do this, otherwise return as normal", headers);
-            return response.arrayBuffer().then(function(buffer) {
-                var slicedBuffer    = buffer.slice(start, end + 1);
-                var slicedBlob      = new Blob([slicedBuffer], { type: 'audio/mpeg' });
-                return new Response(slicedBlob, {
-                    status: 206,
-                    statusText: 'Partial Content',
-                    headers: headers
-                });
-            });
-        } else {
-            const data = await response.blob();
+//         // Set the Content-Range header to enable byte-range requests in Safari
+//         var rangeHeader = event.request.headers.get('range');
 
-            return new Response(data, {
-                headers: headers
-            });
-        }
-    } catch (error) {
-        console.error(error);
-    }
+//         if (rangeHeader) {
+//             var totalSize   = response.headers.get('Content-Length');
+//             var range       = rangeHeader.match(/(\d+)-(\d*)/);
+//             var start       = parseInt(range[1], 10);
+//             var end         = range[2] ? parseInt(range[2], 10) : totalSize - 1;
+//             var chunkSize   = end - start + 1;
+
+//             headers['Content-Range'] = 'bytes ' + start + '-' + end + '/' + totalSize;
+//             headers['Content-Length'] = chunkSize;
+
+//             console.log("so if rangeheader , then do this, otherwise return as normal", headers);
+//             return response.arrayBuffer().then(function(buffer) {
+//                 var slicedBuffer    = buffer.slice(start, end + 1);
+//                 var slicedBlob      = new Blob([slicedBuffer], { type: 'audio/mpeg' });
+//                 return new Response(slicedBlob, {
+//                     status: 206,
+//                     statusText: 'Partial Content',
+//                     headers: headers
+//                 });
+//             });
+//         } else {
+//             const data = await response.blob();
+
+//             return new Response(data, {
+//                 headers: headers
+//             });
+//         }
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+// async function getAudioFileByTitle(title, event) {
+//     const audioRecord = await db_audios.files.where({ title: title }).first();
+//     console.log("2 inside getAudioFileByTitle check indexDb for file", audioRecord);
+
+//     if(!audioRecord){
+//         console.log("3 none found, so fetch from network");
+//         let returnResponse = await fetchCacheAudio(event, title);
+//         console.log("4b fetched data , cached in indexDB, returning the blob  itself", returnResponse);
+
+//         return returnResponse;
+//     }else{
+//         const filesize = audioRecord.data.size;
+
+//         console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data, filesize);
+
+//         var headers = {
+//             'Content-Type': 'audio/mpeg',
+//             'Accept-Ranges': 'bytes',
+//             'Content-Length': filesize
+//         };
+
+//         // Set the Content-Range header to enable byte-range requests in Safari
+//         var rangeHeader = event.request.headers.get('range');
+
+//         if (rangeHeader) { // 
+//             console.log(rangeHeader)
+//             var totalSize   = filesize;
+//             var range       = rangeHeader.match(/(\d+)-(\d*)/);
+//             var start       = 0;
+//             var end         = totalSize - 1;
+//             var chunkSize   = end - start + 1;
+//             console.log(range, start, end, chunkSize)
+//             headers['Content-Range'] = 'bytes ' + start + '-' + end + '/' + totalSize;
+//             headers['Content-Length'] = chunkSize;
+
+//             console.log("so if rangeheader , even if fucking cached from indexDB", headers);
+
+//             return new Response(audioRecord.data, {
+//                 status: 206,
+//                 statusText: 'Partial Content',
+//                 headers: headers
+//             });
+//         } else {
+//             console.log("if it is in cache, will it still do a two stage request in safari? will it get here?");
+//             return new Response(audioRecord.data, {
+//                 headers: headers
+//             });
+//         }
+//     }
+// }
+
+async function cacheSuccessfulResponse(fetchResponse, fileName) {
+  let clone = fetchResponse.clone()
+  const data_clone    = await clone.blob();
+
+  const array_buffer_clone = await data_clone.arrayBuffer()
+
+  const audio = {
+      title: fileName,
+      data: array_buffer_clone
+  };
+  console.log('caching data...', audio)
+  db_audios.files.put(audio);
 }
-async function getAudioFileByTitle(title, event) {
-    const audioRecord = await db_audios.files.where({ title: title }).first();
-    console.log("2 inside getAudioFileByTitle check indexDb for file", audioRecord);
 
-    if(!audioRecord){
-        console.log("3 none found, so fetch from network");
-        let returnResponse = await fetchCacheAudio(event, title);
-        console.log("4b fetched data , cached in indexDB, returning the blob  itself", returnResponse);
+async function parseArrayBuffer(request, arrayBuffer){
+  // console.log(fetchResponse)
+  // const arrayBuffer =  await fetchResponse.arrayBuffer()
+  console.log(arrayBuffer)
+  const bytes = /^bytes\=(\d+)\-(\d+)?$/g.exec(
+    request.headers.get('range')
+  );
+  if (bytes) {
+    console.log('bytes', bytes)
+    const start = Number(bytes[1]);
+    const end = Number(bytes[2]) || arrayBuffer.byteLength - 1;
+    console.log(start, end)
+    return new Response(arrayBuffer.slice(start, end + 1), {
+      status: 206,
+      statusText: 'Partial Content',
+      headers: [
+        ['Content-Range', `bytes ${start}-${end}/${arrayBuffer.byteLength}`]
+      ]
+    });
+  } else {
+    console.log('no bytes')
+    return new Response(null, {
+      status: 416,
+      statusText: 'Range Not Satisfiable',
+      headers: [['Content-Range', `*/${arrayBuffer.byteLength}`]]
+    });
+  }
+}
 
-        return returnResponse;
+async function returnRangeRequest(request, fileName) {
+  console.log('returnRangeRequest has been called', request);
+  // let audioRecord = await db_audios.files.where({ title: title }).first(); //attempt to fetch from cache
+  let audioRecord = await db_audios.files.where({ title: fileName }).first();
+
+  if(!audioRecord){ //Network operating
+    console.log(`Cache not found for ${fileName}`);
+    
+    const fetchResponse = await fetch(request)
+    if (!fetchResponse.ok) {
+        throw new Error(`Failed to fetch data from URL: ${request}`);
     }else{
-        const filesize = audioRecord.data.size;
-
-        console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data, filesize);
-
-        var headers = {
-            'Content-Type': 'audio/mpeg',
-            'Accept-Ranges': 'bytes',
-            'Content-Length': filesize
-        };
-
-        // Set the Content-Range header to enable byte-range requests in Safari
-        var rangeHeader = event.request.headers.get('range');
-
-        if (rangeHeader) {
-            var totalSize   = filesize;
-            var range       = rangeHeader.match(/(\d+)-(\d*)/);
-            var start       = 0;
-            var end         = totalSize - 1;
-            var chunkSize   = end - start + 1;
-
-            headers['Content-Range'] = 'bytes ' + start + '-' + end + '/' + totalSize;
-            headers['Content-Length'] = chunkSize;
-
-            console.log("so if rangeheader , even if fucking cached from indexDB", headers);
-
-            return new Response(audioRecord.data, {
-                status: 206,
-                statusText: 'Partial Content',
-                headers: headers
-            });
-        } else {
-            console.log("if it is in cache, will it still do a two stage request in safari? will it get here?");
-            return new Response(audioRecord.data, {
-                headers: headers
-            });
-        }
+      cacheSuccessfulResponse(fetchResponse, fileName);
     }
+    const arrayBuffer =  await fetchResponse.arrayBuffer()
+    return parseArrayBuffer(request, arrayBuffer);
+
+  }else{
+    console.log(`Cache HIT ${fileName}`);
+    return parseArrayBuffer(request, audioRecord.data);
+  }
+  
+}
+
+//Filename = title
+async function returnFromCacheOrFetch(request, fileName) {
+  console.log('no range request', request)
+  let audioRecord = await db_audios.files.where({ title: fileName }).first();
+
+  if(!audioRecord){ //Network operating
+    console.log(`Cache not found for ${fileName}`);
+    
+    const fetchResponse = await fetch(request)
+    if (!fetchResponse.ok) {
+        throw new Error(`Failed to fetch data from URL: ${request}`);
+    }else{
+      cacheSuccessfulResponse(fetchResponse, fileName);
+    }
+
+    return fetchResponse;
+
+  }else{
+    console.log('Cache hit!')
+    var headers = {
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes',
+        'Content-Length': audioRecord.data.size
+    };
+
+    return new Response(audioRecord.data, {
+      status: 200,
+      headers: headers
+    });
+
+  }
+  // const response = await fetch(event.request, {headers: {'Range': 'bytes=0-'}});
+  //       if (!response.ok) {
+  //           throw new Error(`Failed to fetch data from URL: ${event.request}`);
+  //       }
+
+  //       let responseClone   = response.clone();
+  //       const data_clone    = await responseClone.blob();
+
+  //       //has data! , stuff it in IndexDB
+  //       const audio = {
+  //           title: title,
+  //           data: data_clone
+  //       };
+  //       db_audios.files.put(audio);
 }
 
 self.addEventListener('fetch', function(event) {
@@ -195,20 +313,45 @@ self.addEventListener('fetch', function(event) {
 
     if (fileName.endsWith(".m4a")) {
         console.log("1 found fileName partial ends with m4a", fileName);
-        event.respondWith(
-            new Promise(async (resolve) => {
-                let response = await getAudioFileByTitle(fileName, event);
-                console.log("5 , should return a response object with proper headers", response.headers.get("Content-Type"), response.headers.get("Accept-Ranges"), response.headers.get("Content-Length"));
-                resolve(response);
-            })
-        );
+        if(event.request.headers.get('range')){
+          event.respondWith(returnRangeRequest(event.request, fileName))
+        } else {
+          event.respondWith(returnFromCacheOrFetch(event.request,fileName))
+        }
+
+        // event.respondWith(
+        //     new Promise(async (resolve) => {
+        //         let response = await getAudioFileByTitle(fileName, event);
+        //         console.log("5 , should return a response object with proper headers", response.headers.get("Content-Type"), response.headers.get("Accept-Ranges"), response.headers.get("Content-Length"));
+        //         resolve(response);
+        //     })
+        // );
     }else{
         event.respondWith(fetch(event.request));
     }
 });
 
 
-
+self.addEventListener('install', function(event) {
+  // const url       = new URL(event.request.url);
+  // const fileName  = url.pathname.split('/').pop();
+  fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a')
+    .then(res => {
+      if (!res.ok) {
+        throw new TypeError("bad response status");
+      }
+      let clone = res.clone()
+      return clone.arrayBuffer()
+    })
+    .then(buffer => {
+      const audio = {
+        title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
+        data: buffer
+      }
+      console.log('caching', audio)
+      return db_audios.files.put(audio);
+    })
+})
 
 
 
