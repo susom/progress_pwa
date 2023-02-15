@@ -26,15 +26,15 @@ clientsClaim();
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
 
-//precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(self.__WB_MANIFEST);
 
 // This will filter out all manifest entries with URLs ending in .jpg
 // Adjust the criteria as needed.
 //https://stackoverflow.com/questions/67118051/filtering-out-assets-from-precaching-in-create-react-app
-const filteredManifest = self.__WB_MANIFEST.filter((entry) => {
-    return !entry.url.endsWith('.m4a');
-});
-precacheAndRoute(filteredManifest);
+// const filteredManifest = self.__WB_MANIFEST.filter((entry) => {
+//     return !entry.url.endsWith('.m4a');
+// });
+// precacheAndRoute(filteredManifest);
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
@@ -79,80 +79,91 @@ registerRoute(
     ],
   })
 );
+console.log("man this blackbox");
+registerRoute(
+    /.*\.m4a/,
+    new CacheFirst({
+        cacheName: 'audios',
+        plugins: [
+            new CacheableResponsePlugin({statuses: [200]}),
+            new RangeRequestsPlugin(),
+        ],
+    }),
+);
 
 //TODO REFACTOR TO GENERALIZE , BUT THIS WORKS FOR NOW
-async function fetchCacheAudio(url, title){
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch data from URL: ${url}`);
-        }
-
-        const data = await response.blob();
-
-        //has data! , stuff it in IndexDB
-        const audio = {
-            title: title,
-            data: data
-        };
-        db_audios.files.put(audio);
-
-        console.log("4a inside the network fetch to get m4a file, return the blob", data);
-
-        return data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-async function getAudioFileByTitle(title, event) {
-    const audioRecord = await db_audios.files.where({ title: title }).first();
-    console.log("2 inside getAudioFileByTitle check indexDb for file", audioRecord);
-
-    if(!audioRecord){
-        console.log("3 none found, so fetch from network");
-        let audioBlob = await fetchCacheAudio(event.request, title);
-
-        console.log("4b fetched data , cached in indexDB, returning the blob itself", audioBlob);
-        const filesize = audioBlob.size;
-        return new Response(audioBlob, {
-            headers: {
-                "Content-Type": "audio/x-m4a"
-                ,"Content-Length" :  filesize
-                ,"Accept-Ranges" : "bytes"
-                ,"Cache-Control" : "public, max-age=31536000"
-            }
-        });
-    }else{
-        console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data);
-        const filesize = audioRecord.data.size;
-        return new Response(audioRecord.data, {
-            headers: {
-                "Content-Type": "audio/x-m4a"
-                ,"Content-Length" : filesize
-                ,"Accept-Ranges" : "bytes"
-                ,"Cache-Control" : "public, max-age=31536000"
-            }
-        });
-    }
-}
-
-self.addEventListener('fetch', function(event) {
-    const url       = new URL(event.request.url);
-    const fileName  = url.pathname.split('/').pop();
-
-    if (fileName.endsWith(".m4a")) {
-        console.log("1 found fileName partial ends with m4a", fileName);
-        event.respondWith(
-            new Promise(async (resolve) => {
-                let response = await getAudioFileByTitle(fileName, event);
-                console.log("5 , should return a response object with proper headers", response.headers.get("Content-Type"), response.headers.get("Accept-Ranges"), response.headers.get("Cache-Control"), response.headers.get("Content-Length"));
-                resolve(response);
-            })
-        );
-    }else{
-        event.respondWith(fetch(event.request));
-    }
-});
+// async function fetchCacheAudio(url, title){
+//     try {
+//         const response = await fetch(url);
+//         if (!response.ok) {
+//             throw new Error(`Failed to fetch data from URL: ${url}`);
+//         }
+//
+//         const data = await response.blob();
+//
+//         //has data! , stuff it in IndexDB
+//         const audio = {
+//             title: title,
+//             data: data
+//         };
+//         db_audios.files.put(audio);
+//
+//         console.log("4a inside the network fetch to get m4a file, return the blob", data);
+//
+//         return data;
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+// async function getAudioFileByTitle(title, event) {
+//     const audioRecord = await db_audios.files.where({ title: title }).first();
+//     console.log("2 inside getAudioFileByTitle check indexDb for file", audioRecord);
+//
+//     if(!audioRecord){
+//         console.log("3 none found, so fetch from network");
+//         let audioBlob = await fetchCacheAudio(event.request, title);
+//
+//         console.log("4b fetched data , cached in indexDB, returning the blob itself", audioBlob);
+//         const filesize = audioBlob.size;
+//         return new Response(audioBlob, {
+//             headers: {
+//                 "Content-Type": "audio/x-m4a"
+//                 ,"Content-Length" :  filesize
+//                 ,"Accept-Ranges" : "bytes"
+//                 ,"Cache-Control" : "public, max-age=31536000"
+//             }
+//         });
+//     }else{
+//         console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data);
+//         const filesize = audioRecord.data.size;
+//         return new Response(audioRecord.data, {
+//             headers: {
+//                 "Content-Type": "audio/x-m4a"
+//                 ,"Content-Length" : filesize
+//                 ,"Accept-Ranges" : "bytes"
+//                 ,"Cache-Control" : "public, max-age=31536000"
+//             }
+//         });
+//     }
+// }
+//
+// self.addEventListener('fetch', function(event) {
+//     const url       = new URL(event.request.url);
+//     const fileName  = url.pathname.split('/').pop();
+//
+//     if (fileName.endsWith(".m4a")) {
+//         console.log("1 found fileName partial ends with m4a", fileName);
+//         event.respondWith(
+//             new Promise(async (resolve) => {
+//                 let response = await getAudioFileByTitle(fileName, event);
+//                 console.log("5 , should return a response object with proper headers", response.headers.get("Content-Type"), response.headers.get("Accept-Ranges"), response.headers.get("Cache-Control"), response.headers.get("Content-Length"));
+//                 resolve(response);
+//             })
+//         );
+//     }else{
+//         event.respondWith(fetch(event.request));
+//     }
+// });
 
 // Any other custom service worker logic can go here.
 // var version = '2'
