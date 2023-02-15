@@ -113,16 +113,24 @@ async function getAudioFileByTitle(title, event) {
         let audioBlob = await fetchCacheAudio(event.request, title);
 
         console.log("4b fetched data , cached in indexDB, returning the blob itself", audioBlob);
+        const filesize = audioBlob.size;
         return new Response(audioBlob, {
             headers: {
-                "Content-Type": "audio/mpeg"
+                "Content-Type": "audio/x-m4a"
+                ,"Content-Length" :  filesize
+                ,"Accept-Ranges" : "bytes"
+                ,"Cache-Control" : "public, max-age=31536000"
             }
         });
     }else{
         console.log("3 & 4 found in INDEXDB!!", title, audioRecord.data);
+        const filesize = audioRecord.data.size;
         return new Response(audioRecord.data, {
             headers: {
-                "Content-Type": "audio/mpeg"
+                "Content-Type": "audio/x-m4a"
+                ,"Content-Length" : filesize
+                ,"Accept-Ranges" : "bytes"
+                ,"Cache-Control" : "public, max-age=31536000"
             }
         });
     }
@@ -132,12 +140,12 @@ self.addEventListener('fetch', function(event) {
     const url       = new URL(event.request.url);
     const fileName  = url.pathname.split('/').pop();
 
-    if (fileName.indexOf('R01_Beth_wBeats') !== -1) {
-        console.log("1 found fileName partial = R01_Beth_wBeats", fileName);
+    if (fileName.endsWith(".m4a")) {
+        console.log("1 found fileName partial ends with m4a", fileName);
         event.respondWith(
             new Promise(async (resolve) => {
                 let response = await getAudioFileByTitle(fileName, event);
-                console.log("5 , should return a response object eventually", response);
+                console.log("5 , should return a response object with proper headers", response.headers.get("Content-Type"), response.headers.get("Accept-Ranges"), response.headers.get("Cache-Control"), response.headers.get("Content-Length"));
                 resolve(response);
             })
         );
