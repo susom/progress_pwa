@@ -129,6 +129,7 @@ export function Home() {
                                     onProgress={handlePlayed}
                                     playbackRate={playbackRate}
                                     playing={playing}
+                                    crossOrigin='anonymous'
                                 />
                             </div>
 
