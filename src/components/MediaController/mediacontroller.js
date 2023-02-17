@@ -33,12 +33,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
 
     
     const handlePlay = () => handlePlayPause()
-    
-    const handleFastForward = () => {
-       fastForward()
-    }
 
-    const renderFastForward = playbackRate === 1 ? <RightOutlined /> : <DoubleRightOutlined />
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
     
     return (
@@ -55,11 +50,6 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
                     tooltip={{
                         formatter
                     }}
-                />
-                <Button 
-                    className="redo" 
-                    icon={renderFastForward} 
-                    onClick={handleFastForward}
                 />
             </div>
         </div>
