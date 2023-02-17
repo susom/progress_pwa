@@ -9,8 +9,25 @@ To run in development:
 2. `docker compose up`
 3. Navigate to localhost:3000
 
+# Local development
 
+New dependencies can be installed with npm. As the docker container attempts to mirror the current directory for hot-reloading with volumes, local installation with `npm install` will also have to be executed in the container.
 
+To exec into a container use the following command : `docker exec -it <Container_id> sh`
+
+This project uses service workers to cache offline data. 
+
+Service workers are not enabled on localhost by default.
+To test service worker configurations locally, execute the following commands: 
+
+1. `npm run build`
+2. `npm install --global serve`
+3. `serve -s build`
+
+This will allow you to test your production build configuraiton using the serve library. 
+If you'd rather not install the package, you can opt to serve the build folder with a different webserver. 
+
+Ensure to navigate to localhost:xxxx in an incognito window
 
 # Getting Started with Create React App
 
