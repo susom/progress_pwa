@@ -14,6 +14,7 @@ import Home from './views/Home';
 import Settings from './views/Settings';
 
 function App() {
+  
   return (
       <DatabaseContextProvider>
       <SessionContextProvider>
