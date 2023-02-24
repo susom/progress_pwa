@@ -12,9 +12,9 @@ import {DatabaseContextProvider} from "./contexts/Database";
 import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';
+import Login from './views/Login';
 
 function App() {
-  
   return (
       <DatabaseContextProvider>
       <SessionContextProvider>
@@ -25,6 +25,7 @@ function App() {
                   <Route path='/' element={<Landing />} />
                   <Route path='/home' element={<Home />} />
                   <Route path='/settings' element={<Settings />} />
+                  <Route path='/login' element={<Login />} />
                 </Routes>
               </div>
               {/* <BackgroundSelection/> */}
