@@ -43,14 +43,7 @@ app.post('/analyze', async (req, res, next) => {
 app.post('/login', async (req, res, next) => {
     try{
         const {username, password} = req.body
-        let recordData = new FormData();
-        recordData.append('token', process.env.REDCAP_API_TOKEN);
-        recordData.append('content', 'record');
-        recordData.append('format', 'json');
-        recordData.append('action', 'export');
-        recordData.append('type', 'flat');
-        recordData.append('fields', 'id,study_id,alias,pw,hash');
-        recordData.append('filterLogic', `[alias] = '${username}'`)
+        let recordData = buildPayload('id,study_id,alias,pw,hash', `[alias] = '${username}'`);
         let { data } = await axios({
             method: 'post',
             url: 'https://redcap.stanford.edu/api/',
@@ -70,6 +63,45 @@ app.post('/login', async (req, res, next) => {
         next(err)
     }
 })
+
+app.post('/verify', async (req, res, next) => {
+    try {
+        const {hash} = req.body
+        
+        if(!hash){
+            res.status(400).send('Hash not supplied')
+        } else {
+            let recordData = buildPayload('id,study_id,alias,hash', `[hash] = '${hash}'`);
+            let { data } = await axios({
+                method: 'post',
+                url: 'https://redcap.stanford.edu/api/',
+                data: recordData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            })
+            if(data.length){
+                res.status(200).send(data[0]);
+            } else {
+                res.status(400).send(`Hash ${hash} is invalid`)
+            }
+        }
+    } catch (err) {
+        next(err)
+    }
+})
+
+function buildPayload(fieldString, filterString) {
+    let recordData = new FormData();
+    recordData.append('token', process.env.REDCAP_API_TOKEN);
+    recordData.append('content', 'record');
+    recordData.append('format', 'json');
+    recordData.append('action', 'export');
+    recordData.append('type', 'flat');
+    recordData.append('fields', fieldString);
+    recordData.append('filterLogic', filterString)
+    return recordData;
+}
 
 async function sendGetRequest() {
     try {
