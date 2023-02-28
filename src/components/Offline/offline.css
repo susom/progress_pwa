@@ -9,7 +9,7 @@
     }
     .installprompt.ant-drawer-content{
         width: 50% !important;
-        left: 25% !important;
+        /* left: 25% !important; */
         border-radius: 25px;
         position: relative;
     }

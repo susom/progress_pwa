@@ -8,5 +8,5 @@ db_audios.version(1).stores({
 
 export const db_sessions = new Dexie('progress_sessions');
 db_sessions.version(1).stores({
-    logs  : '++id, userid, timestamp, duration'
+    logs  : '++id, userid, timestamp, hash'
 });
