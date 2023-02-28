@@ -15,7 +15,7 @@ export function Login() {
             userid: res?.data?.alias,
             timestamp: Date.now(),
             hash: res?.data?.hash
-        };
+        }; 
         console.log('caching login...', log)
         db_sessions.logs.put(log);
         setIsLoggedIn(true)

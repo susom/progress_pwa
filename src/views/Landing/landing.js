@@ -2,7 +2,7 @@ import {useState, useEffect} from "react";
 import {Navigate} from "react-router-dom";
 import {Spin, Space} from 'antd';
 import { db_sessions } from "../../database/db";
-
+import axios from 'axios';
 
 import "../../assets/css/view_splash.css";
 export function Landing(){
@@ -10,10 +10,23 @@ export function Landing(){
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     
     const fetchFromCache = async () => {
-        let hashRecord = await db_sessions.logs.where("hash").notEqual("").first()
-        if(hashRecord){ //user has logged in, 
-            setIsLoggedIn(true)
-        } 
+        let sessionRecord = await db_sessions.logs.where("hash").notEqual("").first()
+        console.log(sessionRecord)
+        if(sessionRecord){ //user has logged in, 
+            // setIsLoggedIn(true)
+            let { hostname } = window.location
+            const url = hostname === 'localhost' ? 'http://localhost:8080/verify' : process.env.REACT_APP_BACKEND_URL
+
+            axios({
+                method: 'post',
+                url: url,
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                data: { hash: sessionRecord?.hash }
+            }).then((res) => setIsLoggedIn(true))
+                .catch(err => console.log(err))
+            } 
     }
 
     useEffect(()=> {

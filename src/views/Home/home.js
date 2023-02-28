@@ -21,7 +21,7 @@ export function Home() {
     const [projectName, setProjectName] = useState("Calm Tool - Relief App");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
 
-    const database = useContext(DatabaseContext);
+    // const database = useContext(DatabaseContext);
     const context = useContext(SessionContext);
     const player = useRef();
 
