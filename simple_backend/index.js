@@ -40,6 +40,37 @@ app.post('/analyze', async (req, res, next) => {
     }
 });
 
+app.post('/login', async (req, res, next) => {
+    try{
+        const {username, password} = req.body
+        let recordData = new FormData();
+        recordData.append('token', process.env.REDCAP_API_TOKEN);
+        recordData.append('content', 'record');
+        recordData.append('format', 'json');
+        recordData.append('action', 'export');
+        recordData.append('type', 'flat');
+        recordData.append('fields', 'id,study_id,alias,pw,hash');
+        recordData.append('filterLogic', `[alias] = '${username}'`)
+        let { data } = await axios({
+            method: 'post',
+            url: 'https://redcap.stanford.edu/api/',
+            data: recordData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        })
+        if(data.length && data[0].pw === password){
+            delete data[0].pw; //Remove pass, not necessary to return to client after login
+            res.status(200).send(data[0]);
+        } else {
+            res.status(403).send(`Unauthorized, supplied credentials are incorrect for user ${username}`)
+        }
+            
+    } catch (err) {
+        next(err)
+    }
+})
+
 async function sendGetRequest() {
     try {
         let record = {
