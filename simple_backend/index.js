@@ -43,6 +43,9 @@ app.post('/analyze', async (req, res, next) => {
 app.post('/login', async (req, res, next) => {
     try{
         const {username, password} = req.body
+        if(!username || !password)
+            return res.status(401).send('No data passed');
+
         let recordData = buildPayload('id,study_id,alias,pw,hash', `[alias] = '${username}'`);
         let { data } = await axios({
             method: 'post',
