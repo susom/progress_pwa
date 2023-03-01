@@ -1,17 +1,20 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
 import { DatabaseContext } from '../../contexts/Database';
-
+import { Navigate } from "react-router-dom";
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
 import axios from 'axios';
+import { db_sessions } from "../../database/db";
+
 import MediaController from "../../components/MediaController";
 
 import "../../assets/css/view_home.css";
-import mp3 from "../../assets/audio/R01_Beth_wBeats.m4a";
+import long from "../../assets/audio/R01_Beth_wBeats.m4a";
+import short from '../../assets/audio/Audio_short.m4a';
 import BackgroundSelection from "../../components/Backgrounds";
 
-export function Home() {
+export function Home({isOnline}) {
     const [played, setPlayed] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [playbackRate, setPlaybackRate] = useState(1)
@@ -20,6 +23,8 @@ export function Home() {
     const [timeInterval, setTimeInterval] = useState(0);
     const [projectName, setProjectName] = useState("Calm Tool - Relief App");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
+    const [isLoggedIn, setIsLoggedIn] = useState(null)
+    const [selectedAudio, setSelectedAudio] = useState(long)
 
     // const database = useContext(DatabaseContext);
     const context = useContext(SessionContext);
@@ -38,8 +43,18 @@ export function Home() {
     //     }).then((res) => console.log(res))
     //     .catch(err=>console.log(err))
     // }, [])
+    
+    const verifyLoginStatus = async () => {
+        let sessionRecord = await db_sessions.logs.where("userid").notEqual("").first()
+        if(sessionRecord)
+            setIsLoggedIn(true)
+        else
+            setIsLoggedIn(false)
+    }
 
     useEffect(() => {
+        if(!isLoggedIn)
+            verifyLoginStatus()
         const intervalId = setInterval(() => {
             if(playing){
                 setTimeInterval(timeInterval + 1);
@@ -85,10 +100,19 @@ export function Home() {
             setTransparent(true)
         }, 5000)
     }
+    
+    const onAudioSelect = (filepath) => {
+        setSelectedAudio(filepath)
+    }
 
     const renderTransparentClasses = () => transparent ? `transparent` : 'visible'
 
     const renderClasses = () => `panel ${context.data.background}`
+    
+    if (isLoggedIn === null) //if user is navigating here, wait until status check
+        return null
+    if (isLoggedIn === false) //Can't verify user, redirect
+        return <Navigate to="/login" replace />
 
     return (
         <div id="main" className={renderClasses()}>
@@ -121,7 +145,7 @@ export function Home() {
                                 <ReactPlayer
                                     ref={player}
                                     className='react-player'
-                                    url={mp3}
+                                    url={selectedAudio}
                                     pip={false}
                                     light={false}
                                     width='0%'
@@ -138,8 +162,9 @@ export function Home() {
                                 playedRatio={played}
                                 handlePlayPause={handlePlayPause}
                                 seek={seek}
-                                fastForward={fastForward}
-                                playbackRate={playbackRate}
+                                files={[short, long]}
+                                selected={selectedAudio}
+                                onAudioSelect={onAudioSelect}
                             />
 
 

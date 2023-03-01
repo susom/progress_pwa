@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Slider, Button } from 'antd';
-import { CaretRightOutlined, PauseOutlined, RightOutlined, DoubleRightOutlined } from '@ant-design/icons';
+import { Slider, Button, Dropdown, Space} from 'antd';
+import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} from '@ant-design/icons';
+
 import './mediacontroller.css'
 
-export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, fastForward, playbackRate }) => {
+export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect }) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
@@ -24,6 +25,11 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
         setValue(e)
     }
     
+    // On audio select handler
+    const onClick = ({ key }) => {
+        onAudioSelect(key)
+    };
+
     useEffect(() => {
         if (progressEnabled){
             setValue(playedRatio * 100)
@@ -35,9 +41,30 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, f
     const handlePlay = () => handlePlayPause()
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
+    const items = files.map((e,i) => { //name has to be items for antd 
+        return {
+            key: e,
+            label: e.includes("short") ? 'Audio short (10 min)' : 'Audio Long (30 min)',
+            icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
+            disabled: e === selected ? true : false
+        }
+    })
     
     return (
         <div className="media-controller" style={{marginBottom: '35px'}}>
+            <Dropdown
+                placement="top"
+                menu={{items, onClick}}
+            >
+                <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                    Select Audio
+                    <DownOutlined />
+                </Space>
+                </a>
+                
+            </Dropdown>
+            
             <div className="icon-wrapper">
                 <Button icon={renderPlay} onClick={handlePlay} />
                 <Slider

@@ -13,8 +13,10 @@ import Landing from './views/Landing';
 import Home from './views/Home';
 import Settings from './views/Settings';
 import Login from './views/Login';
+import { Protected } from './components/Protected';
 
-function App() {
+function App({isOnline}) { //Props passed via offline parent 
+  
   return (
       <DatabaseContextProvider>
       <SessionContextProvider>
@@ -22,10 +24,19 @@ function App() {
             <div className="view_box" style={{height:'100%'}}>
               <div className="view_body" style={{height:'100%'}}>
                 <Routes>
-                  <Route path='/' element={<Landing />} />
-                  <Route path='/home' element={<Home />} />
+                  <Route path='/' element={<Landing isOnline={isOnline} />} />
+                  {/* <Route 
+                    path='/home' 
+                    element = {
+                      <Protected isSignedIn={false} />
+                    } 
+                  /> */}
+                  <Route
+                    path='/home'
+                    element={<Home isOnline={isOnline}/>}
+                  />
                   <Route path='/settings' element={<Settings />} />
-                  <Route path='/login' element={<Login />} />
+                  <Route path='/login' element={<Login isOnline={isOnline} />} />
                 </Routes>
               </div>
               {/* <BackgroundSelection/> */}
