@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Children, cloneElement } from 'react';
 import { Drawer, Row, Button, Col, Modal } from 'antd';
 import { EyeInvisibleOutlined, FileTextOutlined } from '@ant-design/icons';
 import Guide from '../../components/Guide';
@@ -11,7 +11,6 @@ export default function Offline({ children }) {
     const isInStandaloneMode = (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://')
     const [installOpen, setInstallOpen] = useState(!isInStandaloneMode)
     const [isModalOpen, setIsModalOpen] = useState(false)
-
     // const isIOS = () => {
     //     var userAgent = window.navigator.userAgent.toLowerCase();
     //     return /iphone|ipad|ipod/.test(userAgent);
@@ -122,7 +121,13 @@ export default function Offline({ children }) {
                     />
                 </>
             }
-            {children}
+            {
+                Children.map(
+                    children, 
+                    child => cloneElement(child, { isOnline: online })
+                  )
+            }
+            {/* {children} */}
         </>
     );
 }

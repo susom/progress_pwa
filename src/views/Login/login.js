@@ -1,15 +1,22 @@
-import { Button, Form, Input, Card, Row } from 'antd';
+import { Button, Form, Input, Card, Row, message } from 'antd';
 import { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import { db_sessions } from "../../database/db"
+import { useLocation } from 'react-router-dom';
 
-export function Login() {
+export function Login({isOnline}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+    // const location = useLocation();
     // Successful Login
+    const [messageApi, contextHolder] = message.useMessage();
+    const renderError = () => {
+      messageApi.error('Error fetching information');
+    };
+    
+
     const handleLogin = (res) => {
         const log = { //Append session info to to local storage
             userid: res?.data?.alias,
@@ -38,7 +45,7 @@ export function Login() {
         }).then((res) => {
             handleLogin(res)
         })
-            .catch(err => console.log(err))
+            .catch(err => renderError())
     }
 
     const onChange = ({ target }) => {
@@ -47,16 +54,16 @@ export function Login() {
         else
             setPassword(target.value)
     }
-    console.log(isLoggedIn)
+
     if (isLoggedIn) {
         return <Navigate to={{ pathname: '/home' }} />
-
     }
 
     return (
         <div>
             <Row justify="center">
                 <Card title='Login' style={{ width: '50%', top: '40vh', minWidth: '330px', maxWidth: '600px' }}>
+                    {contextHolder}
                     <Form
                         name="basic"
                         initialValues={{ remember: true }}
