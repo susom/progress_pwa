@@ -58,7 +58,8 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
             >
                 <a onClick={(e) => e.preventDefault()}>
                 <Space>
-                    Select Audio
+                    {selected.includes("short") ? 'Audio short (10 min)' : 'Audio long (30 min)' }
+                    {/* {selected} */}
                     <DownOutlined />
                 </Space>
                 </a>

@@ -1,5 +1,5 @@
 import { Button, Form, Input, Card, Row, message } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import { db_sessions } from "../../database/db"
@@ -8,14 +8,27 @@ import { useLocation } from 'react-router-dom';
 export function Login({isOnline}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    // const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(null)
+    
     // Successful Login
     const [messageApi, contextHolder] = message.useMessage();
     const renderError = () => {
       messageApi.error('Error fetching information');
     };
     
+    //User has previously logged in
+    const verifyLoginStatus = async () => {
+        let sessionRecord = await db_sessions.logs.where("userid").notEqual("").first()
+        if(sessionRecord)
+            setIsLoggedIn(true)
+        else
+            setIsLoggedIn(false)
+    }
+
+    useEffect(() => {
+        if(!isLoggedIn)
+            verifyLoginStatus()
+    }, [])
 
     const handleLogin = (res) => {
         const log = { //Append session info to to local storage
@@ -55,6 +68,9 @@ export function Login({isOnline}) {
             setPassword(target.value)
     }
 
+    if (isLoggedIn === null) //if user is navigating here, wait until status check
+        return null
+    
     if (isLoggedIn) {
         return <Navigate to={{ pathname: '/home' }} />
     }
