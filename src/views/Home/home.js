@@ -23,7 +23,7 @@ export function Home({isOnline}) {
     const [transparent, setTransparent] = useState(true)
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [timeInterval, setTimeInterval] = useState(0);
-    const [projectName, setProjectName] = useState("Calm Tool - Relief App");
+    const [projectName, setProjectName] = useState("Empowered Relief");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
     const [loading, setLoading] = useState(true)
     const [selectedAudio, setSelectedAudio] = useState(long)
