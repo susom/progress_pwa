@@ -30,9 +30,13 @@ app.use(express.json());
  * @param {Object} res Cloud Function response context.
  *                     More info: https://expressjs.com/en/api.html#res
  */
-app.post('/analyze', async (req, res, next) => {
+app.post('/sendUsageData', async (req, res, next) => {
     try {
-        const data = await sendGetRequest()
+        // const {start_time, end_time, user_id, redcap_record_id} = req.body
+        // if (!start_time || !end_time || !user_id || !redcap_record_id)
+        if(!req.body.length)
+            return res.status(401).send('Required data not passed');
+        const data = await sendPostRequest(req.body)
         res.status(200).send({ data });
 
     } catch (err) {
@@ -40,13 +44,56 @@ app.post('/analyze', async (req, res, next) => {
     }
 });
 
+async function sendPostRequest(body) {
+    try {
+        let full = []
+        let record = {}
+        for(let record in body){
+            upload = {
+                'id': body[record].redcap_record_id,
+                'redcap_repeat_instance': 'new',
+                'redcap_repeat_instrument': 'session_data',
+                'start_time': body[record].start_time,
+                'end_time': body[record].end_time,
+                'duration': (new Date(body[record].end_time).getTime() - new Date(body[record].start_time).getTime()) / 1000
+            }
+            full.push(upload)
+        }
+        
+        record = JSON.stringify(full)
+        let bodyFormData = new FormData();
+        bodyFormData.append('token', process.env.REDCAP_API_TOKEN);
+        bodyFormData.append('content', 'record');
+        bodyFormData.append('format', 'json');
+        bodyFormData.append('type', 'flat');
+        bodyFormData.append('data', record);
+
+        const { data } = await axios({
+            method: 'post',
+            url: 'https://redcap.stanford.edu/api/',
+            data: bodyFormData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        })
+
+        return data;
+
+
+    } catch (err) {
+        // Handle Error Here
+        console.error(err);
+        next(err);
+    }
+}
+
 app.post('/login', async (req, res, next) => {
     try{
         const {username, password} = req.body
         if(!username || !password)
             return res.status(401).send('No data passed');
 
-        let recordData = buildPayload('id,study_id,alias,pw,hash', `[alias] = '${username}'`);
+        let recordData = buildPayload('id,study_id,alias,pw,deactivate', `[alias] = '${username}'`);
         let { data } = await axios({
             method: 'post',
             url: 'https://redcap.stanford.edu/api/',
@@ -55,7 +102,7 @@ app.post('/login', async (req, res, next) => {
                 "Content-Type": "multipart/form-data",
             }
         })
-        if(data.length && data[0].pw === password){
+        if(data.length && data[0].pw === password && data[0].deactivate___1 === '0'){
             delete data[0].pw; //Remove pass, not necessary to return to client after login
             res.status(200).send(data[0]);
         } else {
@@ -106,43 +153,7 @@ function buildPayload(fieldString, filterString) {
     return recordData;
 }
 
-async function sendGetRequest() {
-    try {
-        let record = {
-            'id': '12',
-            'device_id': 123456,
-            'duration': 55,
-            'last_login': new Date().toISOString(),
-            'redcap_repeat_instance': 'new',
-            'redcap_repeat_instrument': 'session_data'
-        }
 
-        record = JSON.stringify([record])
-        let bodyFormData = new FormData();
-        bodyFormData.append('token', process.env.REDCAP_API_TOKEN);
-        bodyFormData.append('content', 'record');
-        bodyFormData.append('format', 'json');
-        bodyFormData.append('type', 'flat');
-        bodyFormData.append('data', record);
-
-        const { data } = await axios({
-            method: 'post',
-            url: 'https://redcap.stanford.edu/api/',
-            data: bodyFormData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
-        })
-
-        return data;
-
-
-    } catch (err) {
-        // Handle Error Here
-        console.error(err);
-        next(err);
-    }
-}
 
 module.exports = {
     app
