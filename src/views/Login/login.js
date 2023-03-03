@@ -2,14 +2,13 @@ import { Button, Form, Input, Card, Row, message } from 'antd';
 import { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
-import { db_sessions } from "../../database/db"
-import { useLocation } from 'react-router-dom';
+import { db_user } from "../../database/db"
 
 export function Login({isOnline}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(null)
-    
+    const [userInfo, setUserInfo] = useState({})
     // Successful Login
     const [messageApi, contextHolder] = message.useMessage();
     const renderError = () => {
@@ -18,11 +17,14 @@ export function Login({isOnline}) {
     
     //User has previously logged in
     const verifyLoginStatus = async () => {
-        let sessionRecord = await db_sessions.logs.where("userid").notEqual("").first()
-        if(sessionRecord)
+        let sessionRecord = await db_user.user.where("user_id").notEqual("").first()
+        if(sessionRecord){
             setIsLoggedIn(true)
-        else
+            setUserInfo(sessionRecord)
+        } else {
             setIsLoggedIn(false)
+        }
+            
     }
 
     useEffect(() => {
@@ -32,13 +34,15 @@ export function Login({isOnline}) {
 
     const handleLogin = (res) => {
         const log = { //Append session info to to local storage
-            userid: res?.data?.alias,
-            timestamp: Date.now(),
-            hash: res?.data?.hash
+            user_id: res?.data?.alias,
+            last_login: Date.now(),
+            study_id: res?.data?.study_id,
+            redcap_record_id: res?.data?.id
         }; 
-        console.log('caching login...', log)
-        db_sessions.logs.put(log);
+        console.log('caching user information...', log)
+        db_user.user.put(log);
         setIsLoggedIn(true)
+        setUserInfo(log)
     }
 
     const submit = () => {
@@ -72,7 +76,7 @@ export function Login({isOnline}) {
         return null
     
     if (isLoggedIn) {
-        return <Navigate to={{ pathname: '/home' }} />
+        return <Navigate to={{ pathname: '/home' }} state={userInfo} />
     }
 
     return (

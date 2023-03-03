@@ -1,35 +1,42 @@
 import {useState, useEffect} from "react";
 import {Navigate} from "react-router-dom";
 import {Spin, Space} from 'antd';
-import { db_sessions } from "../../database/db";
+import { db_sessions, db_user } from "../../database/db";
 import axios from 'axios';
 
 import "../../assets/css/view_splash.css";
 export function Landing({isOnline}){
     const [redirectNow, setRedirectNow] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    
-    const fetchFromCache = async () => {
-        let sessionRecord = await db_sessions.logs.where("userid").notEqual("").first()
-        // console.log(sessionRecord)
-        if(sessionRecord){ //user has logged in, 
-            setIsLoggedIn(true)
-            // setIsLoggedIn(true)
-            // let { hostname } = window.location
-            // const url = hostname === 'localhost' ? 'http://localhost:8080/verify' : process.env.REACT_APP_BACKEND_URL
+    const [userInfo, setUserInfo] = useState({})
 
-            // axios({
-            //     method: 'post',
-            //     url: url,
-            //     headers: {
-            //         "Content-Type": 'application/json'
-            //     },
-            //     data: { hash: sessionRecord?.hash }
-            // })
-            //     .then(() => setIsLoggedIn(true))
-            //     .catch(err => {
-            //         console.log('err', err)
-            //     })
+    const fetchFromCache = async () => {
+        let userRecord = await db_user.user.where("user_id").notEqual("").first()
+
+        if(userRecord){ //We have encountered a user
+            let sessionRecords = await db_sessions.logs.where("user_id").equals(userRecord['user_id']).toArray()
+            let {hostname} = window.location
+            const url = hostname === 'localhost' ? 'http://localhost:8080/sendUsageData' : process.env.REACT_APP_BACKEND_URL
+
+            axios({
+                method: 'post',
+                url: url,
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                data: sessionRecords
+            }).then(() => {
+                return db_sessions.logs.where("user_id").equals(userRecord['user_id']).delete() //Delete all session logs if successful
+            }).then((log)=> {
+                console.log('Deleted:', log)
+                setIsLoggedIn(true)
+                setUserInfo(userRecord)
+            })
+            .catch(err=>{ //We are logged in, but network fails
+                console.log('Error attempting to save cached session statistics', err)
+                setIsLoggedIn(true)
+                setUserInfo(userRecord)
+            })
         } else {
             setIsLoggedIn(false)
         }
@@ -42,7 +49,7 @@ export function Landing({isOnline}){
 
 
     const renderNavChoice = () => {
-        return isLoggedIn ? <Navigate to={{pathname: '/home'}} state={{'trying':1}}  /> : <Navigate to='/login' state={{ abc:1 }} />
+        return isLoggedIn ? <Navigate to={{pathname: '/home'}} state={userInfo}  /> : <Navigate to='/login' />
     }
 
     setTimeout(() => {

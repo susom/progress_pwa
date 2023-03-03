@@ -5,9 +5,9 @@ import {
   Route,
 } from "react-router-dom";
 
-import React from 'react';
-import {SessionContextProvider} from "./contexts/Session";
-import {DatabaseContextProvider} from "./contexts/Database";
+import React, { useEffect } from 'react';
+import { SessionContextProvider } from "./contexts/Session";
+import { DatabaseContextProvider } from "./contexts/Database";
 
 import Landing from './views/Landing';
 import Home from './views/Home';
@@ -15,35 +15,48 @@ import Settings from './views/Settings';
 import Login from './views/Login';
 import { Protected } from './components/Protected';
 
-function App({isOnline}) { //Props passed via offline parent 
-  
+function App({ isOnline }) { //Props passed via offline parent 
+
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", handleUnload);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleUnload);
+  //   };
+  // }, []);
+
+  // const handleUnload = (e) => {
+  //   const message = "o/";
+  //   (e || window.event).returnValue = message; //Gecko + IE
+  //   return message;
+  // };
+
   return (
-      <DatabaseContextProvider>
+    <DatabaseContextProvider>
       <SessionContextProvider>
-          <BrowserRouter>
-            <div className="view_box" style={{height:'100%'}}>
-              <div className="view_body" style={{height:'100%'}}>
-                <Routes>
-                  <Route path='/' element={<Landing isOnline={isOnline} />} />
-                  {/* <Route 
+        <BrowserRouter>
+          <div className="view_box" style={{ height: '100%' }}>
+            <div className="view_body" style={{ height: '100%' }}>
+              <Routes>
+                <Route path='/' element={<Landing isOnline={isOnline} />} />
+                {/* <Route 
                     path='/home' 
                     element = {
                       <Protected isSignedIn={false} />
                     } 
                   /> */}
-                  <Route
-                    path='/home'
-                    element={<Home isOnline={isOnline}/>}
-                  />
-                  <Route path='/settings' element={<Settings />} />
-                  <Route path='/login' element={<Login isOnline={isOnline} />} />
-                </Routes>
-              </div>
-              {/* <BackgroundSelection/> */}
+                <Route
+                  path='/home'
+                  element={<Home isOnline={isOnline} />}
+                />
+                <Route path='/settings' element={<Settings />} />
+                <Route path='/login' element={<Login isOnline={isOnline} />} />
+              </Routes>
             </div>
-          </BrowserRouter>
+            {/* <BackgroundSelection/> */}
+          </div>
+        </BrowserRouter>
       </SessionContextProvider>
-      </DatabaseContextProvider>
+    </DatabaseContextProvider>
   );
 }
 

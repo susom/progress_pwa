@@ -37,26 +37,30 @@
     display:none;
 }
 
-.titleBar.playing .AppTitle h1,
-.titleBar.playing .AppTitle h2{
+.titleBar.playing .AppTitle h2,
+.titleBar.playing .AppTitle h3{
     text-shadow:1px 1px 0px #333;
 }
 
-.AppTitle h1, .AppTitle h2{
+.AppTitle h2, .AppTitle h3{
     font-kerning: auto;
     margin:0;
     color:#6FACA8
 }
 
-.AppTitle h1 {
+.AppTitle h2 {
     margin:8px auto 0;
     text-transform:uppercase;
     color: #4B7FAB;
 }
 
-.AppTitle h2{
+.AppTitle h3{
     font-weight:normal;
 }
+
+/* .AppTitle h3{
+    
+} */
 
 a.waterfall{
     background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;
