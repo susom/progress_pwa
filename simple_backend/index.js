@@ -45,46 +45,38 @@ app.post('/sendUsageData', async (req, res, next) => {
 });
 
 async function sendPostRequest(body) {
-    try {
-        let full = []
-        let record = {}
-        for(let record in body){
-            upload = {
-                'id': body[record].redcap_record_id,
-                'redcap_repeat_instance': 'new',
-                'redcap_repeat_instrument': 'session_data',
-                'start_time': body[record].start_time,
-                'end_time': body[record].end_time,
-                'duration': (new Date(body[record].end_time).getTime() - new Date(body[record].start_time).getTime()) / 1000
-            }
-            full.push(upload)
+    let full = []
+    let record = {}
+    for(let record in body){
+        upload = {
+            'id': body[record].redcap_record_id,
+            'redcap_repeat_instance': 'new',
+            'redcap_repeat_instrument': 'session_data',
+            'start_time': body[record].start_time,
+            'end_time': body[record].end_time,
+            'duration': (new Date(body[record].end_time).getTime() - new Date(body[record].start_time).getTime()) / 1000
         }
-        
-        record = JSON.stringify(full)
-        let bodyFormData = new FormData();
-        bodyFormData.append('token', process.env.REDCAP_API_TOKEN);
-        bodyFormData.append('content', 'record');
-        bodyFormData.append('format', 'json');
-        bodyFormData.append('type', 'flat');
-        bodyFormData.append('data', record);
-
-        const { data } = await axios({
-            method: 'post',
-            url: 'https://redcap.stanford.edu/api/',
-            data: bodyFormData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
-        })
-
-        return data;
-
-
-    } catch (err) {
-        // Handle Error Here
-        console.error(err);
-        next(err);
+        full.push(upload)
     }
+        
+    record = JSON.stringify(full)
+    let bodyFormData = new FormData();
+    bodyFormData.append('token', process.env.REDCAP_API_TOKEN);
+    bodyFormData.append('content', 'record');
+    bodyFormData.append('format', 'json');
+    bodyFormData.append('type', 'flat');
+    bodyFormData.append('data', record);
+
+    const { data } = await axios({
+        method: 'post',
+        url: 'https://redcap.stanford.edu/api/',
+        data: bodyFormData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    })
+
+    return data;
 }
 
 app.post('/login', async (req, res, next) => {
