@@ -17,7 +17,7 @@ export function Landing() {
             let sessionRecords = await db_sessions.logs.where("user_id").equals(userRecord['user_id']).toArray()
             if (sessionRecords.length) {
                 let { hostname } = window.location
-                const url = hostname === 'localhost' ? 'http://localhost:8080/sendUsageData' : process.env.REACT_APP_BACKEND_URL
+                const url = hostname === 'localhost' ? 'http://localhost:8080/sendUsageData' : 'https://analyze-j2igbnbiba-uw.a.run.app/sendUsageData'
 
                 axios({
                     method: 'post',

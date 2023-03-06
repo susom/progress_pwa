@@ -47,7 +47,7 @@ export function Login() {
 
     const submit = () => {
         let { hostname } = window.location
-        const url = hostname === 'localhost' ? 'http://localhost:8080/login' : process.env.REACT_APP_BACKEND_URL
+        const url = hostname === 'localhost' ? 'http://localhost:8080/login' : 'https://analyze-j2igbnbiba-uw.a.run.app/login'
 
         axios({
             method: 'post',
