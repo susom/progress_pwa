@@ -67,7 +67,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
             </Dropdown>
             
             <div className="icon-wrapper">
-                <Button icon={renderPlay} onClick={handlePlay} />
+                <Button size="large" icon={renderPlay} onClick={handlePlay} />
                 <Slider
                     min={0}
                     max={100}
@@ -78,6 +78,9 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
                     tooltip={{
                         formatter
                     }}
+                    // trackStyle={{color: 'red'}}
+                    // railStyle={{color:'red'}}
+                    // handleStyle
                 />
             </div>
         </div>
