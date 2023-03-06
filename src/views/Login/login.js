@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import { db_user } from "../../database/db"
 
-export function Login({isOnline}) {
+export function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(null)

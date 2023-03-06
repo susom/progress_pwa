@@ -14,7 +14,7 @@ import Home from './views/Home';
 import Settings from './views/Settings';
 import Login from './views/Login';
 
-function App({ isOnline }) { //Props passed via offline parent 
+function App() { //Props passed via offline parent 
 
   // useEffect(() => {
   //   window.addEventListener("beforeunload", handleUnload);
@@ -36,13 +36,13 @@ function App({ isOnline }) { //Props passed via offline parent
           <div className="view_box" style={{ height: '100%' }}>
             <div className="view_body" style={{ height: '100%' }}>
               <Routes>
-                <Route path='/' element={<Landing isOnline={isOnline} />} />
+                <Route path='/' element={<Landing  />} />
                 <Route
                   path='/home'
-                  element={<Home isOnline={isOnline} />}
+                  element={<Home />}
                 />
                 <Route path='/settings' element={<Settings />} />
-                <Route path='/login' element={<Login isOnline={isOnline} />} />
+                <Route path='/login' element={<Login  />} />
               </Routes>
             </div>
             {/* <BackgroundSelection/> */}

@@ -8,7 +8,7 @@ function Guide({ open, onClose }) {
 
     return (
         <Modal title="Installation instructions" className='guide' open={open} onCancel={onClose} footer={null}>
-            <div style={{ height: '500px', overflow: 'scroll' }}>
+            <div style={{ height: '400px', overflow: 'scroll' }}>
                 <Paragraph>
                     The Calm Tool can be installed as an IOS or Android application on your home screen.
                     This will enable offline use after being loaded for the first time.

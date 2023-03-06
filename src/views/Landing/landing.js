@@ -5,10 +5,10 @@ import { db_sessions, db_user } from "../../database/db";
 import axios from 'axios';
 
 import "../../assets/css/view_splash.css";
-export function Landing({ isOnline }) {
+export function Landing() {
     const [redirectNow, setRedirectNow] = useState(false)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [userInfo, setUserInfo] = useState({})
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [userInfo, setUserInfo] = useState({})
 
     const fetchFromCache = async () => {
         let userRecord = await db_user.user.where("user_id").notEqual("").first()
@@ -30,18 +30,16 @@ export function Landing({ isOnline }) {
                     return db_sessions.logs.where("user_id").equals(userRecord['user_id']).delete() //Delete all session logs if successful
                 }).then((log) => {
                     console.log('Deleted:', log)
-                    setIsLoggedIn(true)
-                    setUserInfo(userRecord)
+                    // setIsLoggedIn(true)
+                    // setUserInfo(userRecord)
                 })
                     .catch(err => { //We are logged in, but network fails
                         console.log('Error attempting to save cached session statistics', err)
-                        setIsLoggedIn(true)
-                        setUserInfo(userRecord)
+                        // setIsLoggedIn(true)
+                        // setUserInfo(userRecord)
                     })
             }
 
-        } else {
-            setIsLoggedIn(false)
         }
 
     }
@@ -51,17 +49,13 @@ export function Landing({ isOnline }) {
     }, [])
 
 
-    const renderNavChoice = () => {
-        return isLoggedIn ? <Navigate to={{ pathname: '/home' }} state={userInfo} /> : <Navigate to='/login' />
-    }
-
     setTimeout(() => {
         setRedirectNow(true);
     }, 3000); //3 secs
 
     return redirectNow ?
         (
-            renderNavChoice()
+            <Navigate to={{ pathname: '/home' }} />
         )
         :
         (

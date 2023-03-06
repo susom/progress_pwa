@@ -1,15 +1,15 @@
-import { useEffect, useState, Children, cloneElement } from 'react';
-import { Drawer, Row, Button, Col, Modal } from 'antd';
+import { useEffect, useState } from 'react';
+import { Drawer, Row, Button} from 'antd';
 import { EyeInvisibleOutlined, FileTextOutlined } from '@ant-design/icons';
-import Guide from '../../components/Guide';
+// import Guide from '../../components/Guide';
 import wifi from '../../assets/img/wifi-connection-offline-icon.png';
 import './offline.css'
 
 export default function Offline({ children }) {
     const [online, setOnline] = useState(window.navigator.onLine)
     const [open, setOpen] = useState(!online)
-    const isInStandaloneMode = (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://')
-    const [installOpen, setInstallOpen] = useState(!isInStandaloneMode)
+    // const isInStandaloneMode = (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://')
+    const [installOpen, setInstallOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     // const isIOS = () => {
     //     var userAgent = window.navigator.userAgent.toLowerCase();
@@ -49,10 +49,11 @@ export default function Offline({ children }) {
         setIsModalOpen(!isModalOpen)
     }
 
-    const onClose2 = () => {
+    const onCloseInstall = () => {
         setInstallOpen(false)
     }
 
+    
     useEffect(() => {
         function handleOnline() {
             setOnline(true)
@@ -86,12 +87,12 @@ export default function Offline({ children }) {
                 <Row align="middle" justify='center'>
                     <img alt='wifi' style={{ display: 'inline', marginRight: '35px' }} width={40} src={wifi}></img>
                     <div style={{ display: 'inline' }}>
-                        <h3>You are offline!</h3>
+                        <h3 style={{margin: '10px'}}>You are offline!</h3>
                         <p>Please check your internet connection.</p>
                     </div>
                 </Row>
             </Drawer>
-            {!isInStandaloneMode && isMobile() &&
+            {/* {!isInStandaloneMode && isMobile() && */}
                 <>
                     <Drawer
                         className='installprompt'
@@ -100,7 +101,7 @@ export default function Offline({ children }) {
                         height='110px'
                         style={{ boxShadow: 'none' }}
                         open={installOpen}
-                        onClose={onClose2}
+                        onClose={onCloseInstall}
                         nm='install'
                     >
                         <Row align="middle" justify='center'>
@@ -110,24 +111,24 @@ export default function Offline({ children }) {
 
                         </Row>
                         <Row align="middle" justify='center'>
-                            <Button style={{ marginRight: '5px' }} icon={<EyeInvisibleOutlined />} onClick={onClose2}>Hide</Button>
+                            <Button style={{ marginRight: '5px' }} icon={<EyeInvisibleOutlined />} onClick={onCloseInstall}>Hide</Button>
                             <Button icon={<FileTextOutlined />} onClick={showModal}>Instructions</Button>
                         </Row>
 
                     </Drawer>
-                    <Guide
+                    {/* <Guide
                         open={isModalOpen}
                         onClose={showModal}
-                    />
+                    /> */}
                 </>
-            }
-            {
+            {/* } */}
+            {/* {
                 Children.map(
                     children, 
                     child => cloneElement(child, { isOnline: online })
                   )
-            }
-            {/* {children} */}
+            } */}
+            {children}
         </>
     );
 }

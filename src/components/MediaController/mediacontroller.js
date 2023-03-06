@@ -44,7 +44,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
     const items = files.map((e,i) => { //name has to be items for antd 
         return {
             key: e,
-            label: e.includes("short") ? 'Audio short (10 min)' : 'Audio Long (30 min)',
+            label: e.includes("short") ? 'Audio short (~10 min)' : 'Audio Long (~30 min)',
             icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
             disabled: e === selected ? true : false
         }
@@ -58,7 +58,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
             >
                 <a onClick={(e) => e.preventDefault()}>
                 <Space>
-                    {selected.includes("short") ? 'Audio short (10 min)' : 'Audio long (30 min)' }
+                    {selected.includes("short") ? 'Audio short (~10 min)' : 'Audio long (~30 min)' }
                     {/* {selected} */}
                     <DownOutlined />
                 </Space>

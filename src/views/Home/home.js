@@ -1,22 +1,22 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
-import { useLocation } from "react-router-dom";
 import ReactPlayer from 'react-player';
-import { Card, Col, Row, Button, Drawer, Tag, Dropdown } from 'antd';
+import { Card, Col, Row, Button, Drawer, Dropdown, Space } from 'antd';
 import axios from 'axios';
 import { db_sessions, db_user } from "../../database/db";
 import {
-    UserOutlined , SyncOutlined, CloseCircleOutlined
+    DownOutlined, FileTextOutlined
   } from '@ant-design/icons';
 import MediaController from "../../components/MediaController";
-
+import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
 import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
 import logo from '../../assets/img/logo_notext.png';
 import BackgroundSelection from "../../components/Backgrounds";
+import Guide from '../../components/Guide';
 
-export function Home({isOnline}) {
+export function Home() {
     const [played, setPlayed] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [playbackRate, setPlaybackRate] = useState(1)
@@ -28,25 +28,15 @@ export function Home({isOnline}) {
     const [loading, setLoading] = useState(true)
     const [selectedAudio, setSelectedAudio] = useState(long)
     const [userInformation, setUserInformation] = useState('')
+    const [instructionsOpen, setInstructions] = useState(false)
     // const { state: userInformation } = useLocation(); //User information passed from login navigation / session
     const [timeStarted, setTimeStarted] = useState(null)
-
+    const navigate = useNavigate()
     const context = useContext(SessionContext);
     const player = useRef();
 
     useEffect(() => {
         verifyLoginStatus()
-        // let {hostname} = window.location
-        // const url = hostname === 'localhost' ? 'http://localhost:8080/analyze' : process.env.REACT_APP_BACKEND_URL
-    
-        // axios({
-        //     method: 'post',
-        //     url: url,
-        //     headers: {
-        //         "Content-Type": 'application/json'
-        //     }
-        // }).then((res) => console.log(res))
-        // .catch(err=>console.log(err))
     }, [])
     
     const verifyLoginStatus = async () => {
@@ -102,6 +92,11 @@ export function Home({isOnline}) {
         };
     }, [timeInterval,playing]);
 
+    const logout = async () => {
+        let user = await db_user.user.where("user_id").notEqual("").delete()
+        // return db_sessions.logs.where("user_id").equals(userRecord['user_id']).delete() //Delete all session logs if successful
+        setUserInformation('')
+    }
 
     const formatTimeInterval = (total_seconds) => {
         const date = new Date(null);
@@ -109,7 +104,6 @@ export function Home({isOnline}) {
         const result = date.toISOString().slice(11, 19);
         return result;
     }
-
 
     const handlePlayed = (e) => {
         setPlayed(e.played)
@@ -131,13 +125,14 @@ export function Home({isOnline}) {
         player.current.seekTo(parseFloat(playedRatio))
     };
     
+    const showModal = () => setInstructions(!instructionsOpen)
     // const fastForward = () => {
     //     if (playbackRate === 1)
     //         setPlaybackRate(2)
     //     else
     //         setPlaybackRate(1)
     // }
-
+    
     const onTouch = () => {
         setTransparent(false)
         setTimeout(() => {
@@ -159,6 +154,24 @@ export function Home({isOnline}) {
     //     return null
     // if (isLoggedIn === false) //Can't verify user, redirect
     //     return <Navigate to="/login" replace />
+    let items
+    if(!userInformation?.user_id) {
+        items = [
+            {
+                label: 'Login',
+                key: '1',
+                onClick: () => navigate('/login')
+            }
+        ]
+    } else {
+        items = [
+            {
+                label: 'Logout',
+                key: '1',
+                onClick: () => logout()
+            }
+        ]
+    }
     if (loading === true)
         return null 
     return (
@@ -184,33 +197,34 @@ export function Home({isOnline}) {
                 </Col>
             </Row>
             <Row style={{marginTop: '13px'}} justify='end'>
-                <Card size="small" style={{opacity: '0.7', borderRadius: '0', margin: '0px'}}>
-                    {/* <Spin spinning={loading} size="small" /> */}
+                <Card size="small" style={{opacity: '0.8', borderRadius: '0', margin: '0px'}}>
+                    <Space>
                     {userInformation?.user_id 
                         ? 
-                        <Tag icon={<SyncOutlined spin={loading ?? undefined}  />} color="processing" >
-                            User: {userInformation?.user_id}    
-                        </Tag>
+                        <Dropdown menu={{items}} >
+                            <Button type="default" style={{backgroundColor: 'rgb(125, 250, 129)'}}>
+                                <Space>
+                                Logged in as: {userInformation.user_id}
+                                <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
                         :
-                        <Tag icon={<CloseCircleOutlined />} color="error" >
-                            No user logged in
-                        </Tag>
-                    }
-                    
-                    {/* <Dropdown.Button
-                        type="primary"
-                        size="small"
-                        onClick={(e)=>(e.preventDefault())}
-                        menu={[{label: 'test', key: '1' }]}
-                    ></Dropdown.Button> */}
+                         <Dropdown menu={{items}} >
+                            <Button style={{color: 'white', backgroundColor: 'rgb(255, 54, 54)'}}>
+                                <Space>
+                                No user logged in
+                                <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
+                      
+                    }   
+                    <Button icon={<FileTextOutlined />} onClick={showModal}/>
+                    </Space>
                 </Card>
-                
             </Row>
-            {/* <Row>
-                <hgroup style={{ marginBottom: '15vh' }}>
-                        <p>Logged in user</p>
-                </hgroup>
-            </Row> */}
+
             <div className='MediaPositioning'>
                 <Row justify="center">
                     <Col xs={24} md={18} lg={16} xl={12}>
@@ -261,6 +275,10 @@ export function Home({isOnline}) {
 
                 </Row>
             </div>
+            <Guide
+                open={instructionsOpen}
+                onClose={showModal}
+            />
         </div>
     )
 }
