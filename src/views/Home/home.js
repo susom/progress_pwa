@@ -190,7 +190,7 @@ export function Home() {
                     <hgroup className="AppTitle">
                         <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px'}}/>
                         <div style={{display:'inline-block'}}>
-                            <h2>{projectName}</h2>
+                            <h2>{userInformation?.study_id ??projectName}</h2>
                             <h3>Binaural Technology</h3>
                         </div>
                     </hgroup>
