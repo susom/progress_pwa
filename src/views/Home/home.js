@@ -54,7 +54,7 @@ export function Home() {
 
     const sendUsageData = async () => {
         let {hostname} = window.location
-        const url = hostname === 'localhost' ? 'http://localhost:8080/sendUsageData' : 'https://analyze-j2igbnbiba-uw.a.run.app/analyze'
+        const url = hostname === 'localhost' ? 'http://localhost:8080/sendUsageData' : 'https://analyze-j2igbnbiba-uw.a.run.app/sendUsageData'
         const session = { //Append session info to to local storage
             redcap_record_id: userInformation?.redcap_record_id,
             user_id: userInformation?.user_id,
