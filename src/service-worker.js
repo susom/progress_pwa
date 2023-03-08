@@ -231,7 +231,6 @@ self.addEventListener('install', function (event) {
       return [await cloneLong.arrayBuffer(), await cloneShort.arrayBuffer()]
     })
     .then(buffers => { //store full audiofile buffer in indexDB
-      console.log(buffers)
       const audio = {
         title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
         data: buffers[0]
@@ -241,7 +240,7 @@ self.addEventListener('install', function (event) {
         data: buffers[1]
       }
 
-      console.log('Performing initial cache of full audio file', audio)
+      console.log('Performing initial cache of full audio file', audio, audio2)
       db_audios.files.put(audio)
 
       return db_audios.files.put(audio2);
