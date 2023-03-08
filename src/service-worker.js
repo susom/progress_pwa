@@ -210,6 +210,7 @@ self.addEventListener('fetch', function (event) {
     }
   } else { //Otherwise serve regularly (intercepted by precache)
     event.respondWith(fetch(event.request));
+    // console.log('precache')
   }
 });
 
@@ -217,21 +218,33 @@ self.addEventListener('fetch', function (event) {
 self.addEventListener('install', function (event) {
   // const url       = new URL(event.request.url);
   // const fileName  = url.pathname.split('/').pop();
-  fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a') //make a network request to fetch audio
-    .then(res => {
-      if (!res.ok) {
+  Promise.all([
+    fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a'), //make a network request to fetch audio
+    fetch('/static/media/Audio_short.10c2e3048c4bd646040f.m4a')
+  ]).then( async ([res, res2]) => {
+      if (!res.ok || !res2.ok) {
         throw new TypeError("bad response status");
       }
-      let clone = res.clone()
-      return clone.arrayBuffer()
+      let cloneLong = res.clone()
+      let cloneShort = res2.clone()
+      
+      return [await cloneLong.arrayBuffer(), await cloneShort.arrayBuffer()]
     })
-    .then(buffer => { //store full audiofile buffer in indexDB
+    .then(buffers => { //store full audiofile buffer in indexDB
+      console.log(buffers)
       const audio = {
         title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
-        data: buffer
+        data: buffers[0]
       }
+      const audio2 = {
+        title: 'Audio_short.10c2e3048c4bd646040f.m4a',
+        data: buffers[1]
+      }
+
       console.log('Performing initial cache of full audio file', audio)
-      return db_audios.files.put(audio);
+      db_audios.files.put(audio)
+
+      return db_audios.files.put(audio2);
     })
 })
 
