@@ -7,18 +7,30 @@ require('dotenv').config({ path: '.env.yaml' })
 
 const app = express();
 
-var whitelist = ['http://localhost:3000'] //For local testing.
+// var allowlist = ['http://localhost:3000', 'http://localhost:58174'] //For local testing.
+// https://20230308t184818-dot-som-rit-relief-app.uw.r.appspot.com/
+var allowlist = [/https:\/\/calmtool\.med\.stanford\.edu/, /.*som-rit-relief-app\.uw\.r\.appspot\.com.*/]
 var corsOptions = {
     origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
+        console.log('testing ... ', origin)
+        const isMatch = allowlist.some(rx => rx.test(origin))
+        console.log(isMatch)
+        if(isMatch) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
         }
+        // if (allowlist.indexOf(origin) !== -1) {
+        //     callback(null, true)
+        // } else {
+        //     callback(new Error('Not allowed by CORS'))
+        // }
     }
 }
 
+app.options('*', cors(corsOptions))
 app.use(cors(corsOptions))
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
