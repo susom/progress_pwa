@@ -53,6 +53,7 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
     return (
         <div className="media-controller" style={{marginBottom: '35px'}}>
             <Dropdown
+                disabled={playing}
                 placement="top"
                 menu={{items, onClick}}
             >

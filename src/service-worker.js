@@ -112,6 +112,7 @@ async function parseArrayBuffer(request, arrayBuffer) {
   if (bytes) {
     const start = Number(bytes[1]);
     const end = Number(bytes[2]) || arrayBuffer.byteLength - 1;
+    console.log(`Returning bytes ${start} - ${end}`)
     return new Response(arrayBuffer.slice(start, end + 1), {
       status: 206,
       statusText: 'Partial Content',
@@ -218,7 +219,8 @@ self.addEventListener('fetch', function (event) {
 self.addEventListener('install', function (event) {
   // const url       = new URL(event.request.url);
   // const fileName  = url.pathname.split('/').pop();
-  Promise.all([
+  event.waitUntil(
+    Promise.all([
     fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a'), //make a network request to fetch audio
     fetch('/static/media/Audio_short.10c2e3048c4bd646040f.m4a')
   ]).then( async ([res, res2]) => {
@@ -230,7 +232,7 @@ self.addEventListener('install', function (event) {
       
       return [await cloneLong.arrayBuffer(), await cloneShort.arrayBuffer()]
     })
-    .then(buffers => { //store full audiofile buffer in indexDB
+    .then( async buffers => { //store full audiofile buffer in indexDB
       const audio = {
         title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
         data: buffers[0]
@@ -240,11 +242,13 @@ self.addEventListener('install', function (event) {
         data: buffers[1]
       }
 
-      console.log('Performing initial cache of full audio file', audio, audio2)
-      db_audios.files.put(audio)
-
-      return db_audios.files.put(audio2);
+      console.log('Performing initial cache of full audio files', audio, audio2)
+      // db_audios.files.put(audio)
+      // db_audios.files.put(audio2)
+      return await db_audios.files.bulkPut([audio,audio2])
     })
+  );
+  
 })
 
 
