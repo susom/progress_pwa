@@ -26,7 +26,7 @@ export function Home() {
     const [projectName, setProjectName] = useState("Empowered Relief");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
     const [loading, setLoading] = useState(true)
-    const [selectedAudio, setSelectedAudio] = useState(long)
+    const [selectedAudio, setSelectedAudio] = useState(short)
     const [userInformation, setUserInformation] = useState('')
     const [instructionsOpen, setInstructions] = useState(false)
     // const { state: userInformation } = useLocation(); //User information passed from login navigation / session
@@ -106,6 +106,7 @@ export function Home() {
     }
 
     const handlePlayed = (e) => {
+        console.log(e)
         setPlayed(e.played)
     }
 
@@ -141,9 +142,11 @@ export function Home() {
     }
     
     const onAudioSelect = (filepath) => {
+        setPlaying(false)
         setSelectedAudio(filepath)
         setTimeInterval(0)
         setFormatedTimeInterval("00:00:00")
+
     }
 
     const renderTransparentClasses = () => transparent ? `transparent` : 'visible'
@@ -174,6 +177,8 @@ export function Home() {
     }
     if (loading === true)
         return null 
+    console.log(selectedAudio)
+    console.log(ReactPlayer.canPlay(selectedAudio))
     return (
         <div id="main" className={renderClasses()}>
             <Drawer
@@ -236,6 +241,7 @@ export function Home() {
                             <div className='player-wrapper' >
                                 <ReactPlayer
                                     ref={player}
+                                    onReady={() => console.log('ready to play!')}
                                     className='react-player'
                                     url={selectedAudio}
                                     pip={false}
@@ -244,6 +250,9 @@ export function Home() {
                                     height='0%'
                                     onProgress={handlePlayed}
                                     playbackRate={playbackRate}
+                                    onBuffer={() => console.log('buffering start')}
+                                    onBufferEnd={()=>console.log('buffering finished')}
+                                    onError={(err) => {console.log("ERROR ENCOUNTERED", err)}}
                                     playing={playing}
                                     crossOrigin='anonymous'
                                 />
