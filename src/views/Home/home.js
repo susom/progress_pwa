@@ -106,7 +106,7 @@ export function Home() {
     }
 
     const handlePlayed = (e) => {
-        console.log(e)
+        // console.log(e)
         setPlayed(e.played)
     }
 
@@ -177,8 +177,7 @@ export function Home() {
     }
     if (loading === true)
         return null 
-    console.log(selectedAudio)
-    console.log(ReactPlayer.canPlay(selectedAudio))
+    
     return (
         <div id="main" className={renderClasses()}>
             <Drawer
@@ -241,7 +240,7 @@ export function Home() {
                             <div className='player-wrapper' >
                                 <ReactPlayer
                                     ref={player}
-                                    onReady={() => console.log('ready to play!')}
+                                    // onReady={() => console.log('ready to play!')}
                                     className='react-player'
                                     url={selectedAudio}
                                     pip={false}
@@ -250,8 +249,8 @@ export function Home() {
                                     height='0%'
                                     onProgress={handlePlayed}
                                     playbackRate={playbackRate}
-                                    onBuffer={() => console.log('buffering start')}
-                                    onBufferEnd={()=>console.log('buffering finished')}
+                                    // onBuffer={() => console.log('buffering start')}
+                                    // onBufferEnd={()=>console.log('buffering finished')}
                                     onError={(err) => {console.log("ERROR ENCOUNTERED", err)}}
                                     playing={playing}
                                     crossOrigin='anonymous'
