@@ -12,19 +12,12 @@ const app = express();
 var allowlist = [/https:\/\/calmtool\.med\.stanford\.edu/, /.*som-rit-relief-app\.uw\.r\.appspot\.com.*/]
 var corsOptions = {
     origin: function (origin, callback) {
-        console.log('testing ... ', origin)
         const isMatch = allowlist.some(rx => rx.test(origin))
-        console.log(isMatch)
         if(isMatch) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
         }
-        // if (allowlist.indexOf(origin) !== -1) {
-        //     callback(null, true)
-        // } else {
-        //     callback(new Error('Not allowed by CORS'))
-        // }
     }
 }
 
