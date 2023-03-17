@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
 import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer, Dropdown, Space } from 'antd';
+import { PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import axios from 'axios';
 import { db_sessions, db_user } from "../../database/db";
 import {
@@ -15,6 +16,7 @@ import short from '../../assets/audio/Audio_short.m4a';
 import logo from '../../assets/img/logo_notext.png';
 import BackgroundSelection from "../../components/Backgrounds";
 import Guide from '../../components/Guide';
+import PWAInstall from '../../components/PWAInstall/pwa_install';
 
 export function Home() {
     const [played, setPlayed] = useState(0)
@@ -34,6 +36,29 @@ export function Home() {
     const navigate = useNavigate()
     const context = useContext(SessionContext);
     const player = useRef();
+
+    const styles = {
+        userLogin: {
+            position:"absolute",
+            top:"30px",
+            right:"60px",
+            width:"185px",
+            height:"35px",
+            textAlign:"right"
+        },
+        login : {
+            display:"inline-block",
+            width:"30px",
+            height:"30px",
+            color:"#666",
+            cursor:"pointer"
+        },
+        userName : {
+            verticalAlign:"bottom",
+            color:"#666",
+            fontSize:"85%"
+        }
+    }
 
     useEffect(() => {
         verifyLoginStatus()
@@ -175,6 +200,7 @@ export function Home() {
             }
         ]
     }
+
     if (loading === true)
         return null 
     
@@ -192,41 +218,13 @@ export function Home() {
             <Row justify="center" className={`titleBar ${playing ? "playing" : ""}`}>
                 <Col style={{right: '10px'}}>
                     <hgroup className="AppTitle">
-                        <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px'}}/>
+                        <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px' , verticalAlign:'top'}}/>
                         <div style={{display:'inline-block'}}>
                             <h2>{userInformation?.study_id ??projectName}</h2>
                             <h3>Binaural Technology</h3>
                         </div>
                     </hgroup>
                 </Col>
-            </Row>
-            <Row style={{marginTop: '13px'}} justify='end'>
-                <Card size="small" style={{opacity: '0.8', borderRadius: '0', margin: '0px'}}>
-                    <Space>
-                    {userInformation?.user_id 
-                        ? 
-                        <Dropdown menu={{items}} >
-                            <Button type="default" style={{backgroundColor: 'rgb(125, 250, 129)'}}>
-                                <Space>
-                                Logged in as: {userInformation.user_id}
-                                <DownOutlined />
-                                </Space>
-                            </Button>
-                        </Dropdown>
-                        :
-                         <Dropdown menu={{items}} >
-                            <Button style={{color: 'white', backgroundColor: 'rgb(255, 54, 54)'}}>
-                                <Space>
-                                No user logged in
-                                <DownOutlined />
-                                </Space>
-                            </Button>
-                        </Dropdown>
-                      
-                    }   
-                    <Button icon={<FileTextOutlined />} onClick={showModal}/>
-                    </Space>
-                </Card>
             </Row>
 
             <div className='MediaPositioning'>
@@ -278,7 +276,7 @@ export function Home() {
                             }
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
-                        <div style={{color:'black'}}> © 2023 Stanford University</div>
+                        <div style={{color:'#666'}}> © 2023 Stanford University</div>
                     </Col>
 
                 </Row>
@@ -287,6 +285,15 @@ export function Home() {
                 open={instructionsOpen}
                 onClose={showModal}
             />
+
+
+            <div style={styles.userLogin}>
+                {userInformation?.user_id
+                    ? (<div><span style={styles.userName}>Hi, {userInformation.user_id}</span> <PersonCheck style={styles.login} onClick={() => { logout() }}/></div>)
+                    : (<div><PersonLock style={styles.login} onClick={() => navigate('/login')}/></div>)
+                }
+            </div>
+            <PWAInstall userInformation={userInformation}/>
         </div>
     )
 }

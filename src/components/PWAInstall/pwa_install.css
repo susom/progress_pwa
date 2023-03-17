@@ -1,0 +1,87 @@
+.install_modal .modal-dialog {
+    margin-top: 100px;
+}
+
+.pwa_install {
+    max-height:70vh;
+    overflow:scroll;
+}
+.pwa_install p {
+    margin-bottom:25px;
+}
+
+.pwa_install_btn{
+    position:absolute;
+    top:30px; right:25px;
+    width:35px;
+    height:35px;
+    text-align:right;
+}
+.pwa_install_btn .login,
+.pwa_install_btn .install_instructions{
+    display:inline-block;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    color:#666;
+    text-indent:-5000px;
+    margin-left:15px;
+}
+
+.pwa_install_btn .login {
+    display:none;
+}
+
+.pwa_install li span {
+    display:block;
+    padding:0;
+    margin:0 0 10px;
+    color:#999;
+    font-size:92%;
+}
+
+.modal_close_x_btn{
+    font-size:140%;
+    cursor:pointer;
+}
+
+
+
+
+
+.android.pwa_install dl {
+    margin-top:30px;
+    padding:10px 20px;
+    overflow:hidden;
+}
+
+.android.pwa_install dt {
+    float:left;
+    width:50px;
+    margin-right:10px;
+}
+
+.android.pwa_install dt img {
+    max-width:50px;
+}
+
+.android.pwa_install dd {
+    float:left;
+}
+
+.android.pwa_install h5 {
+    margin:0;
+}
+
+.android.pwa_install p {
+    margin:0;
+}
+
+.android.pwa_install .add_to_home{
+    text-align:right;
+    float:none;
+}
+
+.android.pwa_install .add_to_home button{
+    margin-top:20px;
+}
