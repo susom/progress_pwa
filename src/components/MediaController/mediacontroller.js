@@ -3,8 +3,9 @@ import { Slider, Button, Dropdown, Space} from 'antd';
 import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} from '@ant-design/icons';
 
 import './mediacontroller.css'
+import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
-export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect }) => {
+export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
@@ -37,7 +38,8 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playedRatio])
 
-    
+
+
     const handlePlay = () => handlePlayPause()
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
@@ -64,7 +66,6 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
                     <DownOutlined />
                 </Space>
                 </a>
-                
             </Dropdown>
             
             <div className="icon-wrapper">

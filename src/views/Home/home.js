@@ -40,11 +40,11 @@ export function Home() {
     const styles = {
         userLogin: {
             position:"absolute",
-            top:"30px",
-            right:"60px",
-            width:"185px",
-            height:"35px",
-            textAlign:"right"
+            top:"90px",
+            left:"10px",
+            width:"200px",
+            height:"30px",
+            textAlign:"left"
         },
         login : {
             display:"inline-block",
@@ -276,20 +276,15 @@ export function Home() {
                             }
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
-                        <div style={{color:'#666'}}> © 2023 Stanford University</div>
+                        <div style={{color:'#666', marginBottom:'10px'}}> © 2023 Stanford University</div>
                     </Col>
 
                 </Row>
             </div>
-            <Guide
-                open={instructionsOpen}
-                onClose={showModal}
-            />
-
 
             <div style={styles.userLogin}>
                 {userInformation?.user_id
-                    ? (<div><span style={styles.userName}>Hi, {userInformation.user_id}</span> <PersonCheck style={styles.login} onClick={() => { logout() }}/></div>)
+                    ? (<div><PersonCheck style={styles.login} onClick={() => { logout() }}/> <span style={styles.userName}>Hi, {userInformation.user_id}</span></div>)
                     : (<div><PersonLock style={styles.login} onClick={() => navigate('/login')}/></div>)
                 }
             </div>

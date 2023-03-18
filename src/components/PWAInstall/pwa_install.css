@@ -12,20 +12,19 @@
 
 .pwa_install_btn{
     position:absolute;
-    top:30px; right:25px;
-    width:35px;
-    height:35px;
+    top:90px; right:10px;
+    width:30px;
+    height:30px;
     text-align:right;
 }
 .pwa_install_btn .login,
 .pwa_install_btn .install_instructions{
     display:inline-block;
-    width:30px;
-    height:30px;
+    width:25px;
+    height:25px;
     cursor:pointer;
     color:#666;
     text-indent:-5000px;
-    margin-left:15px;
 }
 
 .pwa_install_btn .login {
