@@ -34,7 +34,7 @@ const PWAInstallModal = (props) => {
     const handleToggle = () => setShow(!show);
 
     const renderInstructions = () => {
-        if (deviceType === 'Android' || 1) {
+        if (deviceType === 'Android') {
             return (
                 <AndroidInstallPrompt/>
             );
