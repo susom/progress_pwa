@@ -28,7 +28,7 @@ export function Home() {
     const [projectName, setProjectName] = useState("Empowered Relief");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
     const [loading, setLoading] = useState(true)
-    const [selectedAudio, setSelectedAudio] = useState(short)
+    const [selectedAudio, setSelectedAudio] = useState(long)
     const [userInformation, setUserInformation] = useState('')
     const [instructionsOpen, setInstructions] = useState(false)
     // const { state: userInformation } = useLocation(); //User information passed from login navigation / session
