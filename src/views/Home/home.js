@@ -1,12 +1,11 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
 import ReactPlayer from 'react-player';
-import { Card, Col, Row, Button, Drawer, Dropdown, Space } from 'antd';
+import { Card, Col, Row, Button, Drawer } from 'antd';
+import { PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import axios from 'axios';
 import { db_sessions, db_user } from "../../database/db";
-import {
-    DownOutlined, FileTextOutlined
-  } from '@ant-design/icons';
+
 import MediaController from "../../components/MediaController";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
@@ -14,7 +13,8 @@ import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
 import logo from '../../assets/img/logo_notext.png';
 import BackgroundSelection from "../../components/Backgrounds";
-import Guide from '../../components/Guide';
+// import Guide from '../../components/Guide';
+import PWAInstall from '../../components/PWAInstall/pwa_install';
 
 export function Home() {
     const [played, setPlayed] = useState(0)
@@ -26,7 +26,7 @@ export function Home() {
     const [projectName, setProjectName] = useState("Empowered Relief");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
     const [loading, setLoading] = useState(true)
-    const [selectedAudio, setSelectedAudio] = useState(short)
+    const [selectedAudio, setSelectedAudio] = useState(long)
     const [userInformation, setUserInformation] = useState('')
     const [instructionsOpen, setInstructions] = useState(false)
     // const { state: userInformation } = useLocation(); //User information passed from login navigation / session
@@ -34,6 +34,29 @@ export function Home() {
     const navigate = useNavigate()
     const context = useContext(SessionContext);
     const player = useRef();
+
+    const styles = {
+        userLogin: {
+            position:"absolute",
+            top:"90px",
+            left:"10px",
+            width:"200px",
+            height:"30px",
+            textAlign:"left"
+        },
+        login : {
+            display:"inline-block",
+            width:"30px",
+            height:"30px",
+            color:"#666",
+            cursor:"pointer"
+        },
+        userName : {
+            verticalAlign:"bottom",
+            color:"#666",
+            fontSize:"85%"
+        }
+    }
 
     useEffect(() => {
         verifyLoginStatus()
@@ -175,6 +198,7 @@ export function Home() {
             }
         ]
     }
+
     if (loading === true)
         return null 
     
@@ -192,41 +216,13 @@ export function Home() {
             <Row justify="center" className={`titleBar ${playing ? "playing" : ""}`}>
                 <Col style={{right: '10px'}}>
                     <hgroup className="AppTitle">
-                        <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px'}}/>
+                        <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px' , verticalAlign:'top'}}/>
                         <div style={{display:'inline-block'}}>
                             <h2>{userInformation?.study_id ??projectName}</h2>
                             <h3>Binaural Technology</h3>
                         </div>
                     </hgroup>
                 </Col>
-            </Row>
-            <Row style={{marginTop: '13px'}} justify='end'>
-                <Card size="small" style={{opacity: '0.8', borderRadius: '0', margin: '0px'}}>
-                    <Space>
-                    {userInformation?.user_id 
-                        ? 
-                        <Dropdown menu={{items}} >
-                            <Button type="default" style={{backgroundColor: 'rgb(125, 250, 129)'}}>
-                                <Space>
-                                Logged in as: {userInformation.user_id}
-                                <DownOutlined />
-                                </Space>
-                            </Button>
-                        </Dropdown>
-                        :
-                         <Dropdown menu={{items}} >
-                            <Button style={{color: 'white', backgroundColor: 'rgb(255, 54, 54)'}}>
-                                <Space>
-                                No user logged in
-                                <DownOutlined />
-                                </Space>
-                            </Button>
-                        </Dropdown>
-                      
-                    }   
-                    <Button icon={<FileTextOutlined />} onClick={showModal}/>
-                    </Space>
-                </Card>
             </Row>
 
             <div className='MediaPositioning'>
@@ -278,15 +274,19 @@ export function Home() {
                             }
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
-                        <div style={{color:'black'}}> © 2023 Stanford University</div>
+                        <div style={{color:'#666', marginBottom:'10px'}}> © 2023 Stanford University</div>
                     </Col>
 
                 </Row>
             </div>
-            <Guide
-                open={instructionsOpen}
-                onClose={showModal}
-            />
+
+            <div style={styles.userLogin}>
+                {userInformation?.user_id
+                    ? (<div><PersonCheck style={styles.login} onClick={() => { logout() }}/> <span style={styles.userName}>Hi, {userInformation.user_id}</span></div>)
+                    : (<div><PersonLock style={styles.login} onClick={() => navigate('/login')}/></div>)
+                }
+            </div>
+            <PWAInstall userInformation={userInformation}/>
         </div>
     )
 }

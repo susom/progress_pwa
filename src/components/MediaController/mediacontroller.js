@@ -3,8 +3,9 @@ import { Slider, Button, Dropdown, Space} from 'antd';
 import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} from '@ant-design/icons';
 
 import './mediacontroller.css'
+// import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
-export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect }) => {
+export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
@@ -37,14 +38,15 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playedRatio])
 
-    
+
+
     const handlePlay = () => handlePlayPause()
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
     const items = files.map((e,i) => { //name has to be items for antd 
         return {
             key: e,
-            label: e.includes("short") ? 'Audio short (~10 min)' : 'Audio Long (~30 min)',
+            label: e.includes("short") ? '10 Minute Audio' : '20 Minute Audio',
             icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
             disabled: e === selected ? true : false
         }
@@ -59,12 +61,11 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
             >
                 <a onClick={(e) => e.preventDefault()}>
                 <Space>
-                    {selected.includes("short") ? 'Audio short (~10 min)' : 'Audio long (~30 min)' }
+                    {selected.includes("short") ? '10 Minute Audio' : '20 Minute Audio' }
                     {/* {selected} */}
                     <DownOutlined />
                 </Space>
                 </a>
-                
             </Dropdown>
             
             <div className="icon-wrapper">
