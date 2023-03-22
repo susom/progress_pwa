@@ -1,13 +1,11 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { SessionContext } from '../../contexts/Session';
 import ReactPlayer from 'react-player';
-import { Card, Col, Row, Button, Drawer, Dropdown, Space } from 'antd';
+import { Card, Col, Row, Button, Drawer } from 'antd';
 import { PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import axios from 'axios';
 import { db_sessions, db_user } from "../../database/db";
-import {
-    DownOutlined, FileTextOutlined
-  } from '@ant-design/icons';
+
 import MediaController from "../../components/MediaController";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
@@ -15,7 +13,7 @@ import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
 import logo from '../../assets/img/logo_notext.png';
 import BackgroundSelection from "../../components/Backgrounds";
-import Guide from '../../components/Guide';
+// import Guide from '../../components/Guide';
 import PWAInstall from '../../components/PWAInstall/pwa_install';
 
 export function Home() {

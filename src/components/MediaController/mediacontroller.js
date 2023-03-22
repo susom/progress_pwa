@@ -3,7 +3,7 @@ import { Slider, Button, Dropdown, Space} from 'antd';
 import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} from '@ant-design/icons';
 
 import './mediacontroller.css'
-import {PersonCheck, PersonLock} from "react-bootstrap-icons";
+// import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
 export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
     const [value, setValue] = useState(0);
