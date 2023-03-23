@@ -12,11 +12,21 @@
 
 .pwa_install_btn{
     position:absolute;
-    top:90px; right:10px;
-    width:30px;
+    top:90px; right:5px;
+    width:66px;
     height:30px;
-    text-align:right;
+    text-align:center;
 }
+.pwa_install_btn:after {
+    content:"Install App";
+    position:absolute;
+    bottom:-15px;
+    left:0;
+    width:100%;
+    color:#666;
+    font-size:77%;
+}
+
 .pwa_install_btn .login,
 .pwa_install_btn .install_instructions{
     display:inline-block;
