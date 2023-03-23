@@ -82,3 +82,34 @@ a.waterfall{
 }
 
 
+.project_login {
+    position:absolute;
+    top:90px;
+    left:5px;
+    width:66px;
+    height: 30px;
+    text-align:center;
+}
+
+.project_login.in:after,
+.project_login.out:after{
+    content : "Sign In";
+    position:absolute;
+    bottom:-15px;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:77%;
+    color:#666;
+}
+
+.project_login.out:after{
+    content : "Sign Out";
+}
+
+.user_name {
+    float:left;
+    vertical-align:bottom;
+    color:#333;
+    fontSize:85%;
+}

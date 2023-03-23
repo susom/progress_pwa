@@ -36,25 +36,12 @@ export function Home() {
     const player = useRef();
 
     const styles = {
-        userLogin: {
-            position:"absolute",
-            top:"90px",
-            left:"10px",
-            width:"200px",
-            height:"30px",
-            textAlign:"left"
-        },
         login : {
             display:"inline-block",
             width:"30px",
             height:"30px",
             color:"#666",
             cursor:"pointer"
-        },
-        userName : {
-            verticalAlign:"bottom",
-            color:"#666",
-            fontSize:"85%"
         }
     }
 
@@ -261,7 +248,9 @@ export function Home() {
                                 files={[short, long]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
-                            />
+                            >
+                                {userInformation?.user_id ? (<span className={`user_name`}>Hi, {userInformation.user_id}</span>) : "" }
+                            </MediaController>
 
                             {
                                 !playing
@@ -280,10 +269,10 @@ export function Home() {
                 </Row>
             </div>
 
-            <div style={styles.userLogin}>
+            <div className={`project_login ${userInformation?.user_id ? "out" : "in"}`}>
                 {userInformation?.user_id
-                    ? (<div><PersonCheck style={styles.login} onClick={() => { logout() }}/> <span style={styles.userName}>Hi, {userInformation.user_id}</span></div>)
-                    : (<div><PersonLock style={styles.login} onClick={() => navigate('/login')}/></div>)
+                    ? (<PersonCheck style={styles.login} onClick={() => { logout() }}/>)
+                    : (<PersonLock style={styles.login} onClick={() => navigate('/login')}/>)
                 }
             </div>
             <PWAInstall userInformation={userInformation}/>

@@ -5,7 +5,7 @@ import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} fr
 import './mediacontroller.css'
 // import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
-export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
+export const MediaController = ({ children, playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
@@ -54,20 +54,22 @@ export const MediaController = ({ playing, playedRatio, handlePlayPause, seek, s
     
     return (
         <div className="media-controller" style={{marginBottom: '35px'}}>
-            <Dropdown
-                disabled={playing}
-                placement="top"
-                menu={{items, onClick}}
-            >
-                <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                    {selected.includes("short") ? '10 Minute Audio' : '20 Minute Audio' }
-                    {/* {selected} */}
-                    <DownOutlined />
-                </Space>
-                </a>
-            </Dropdown>
-            
+            <div style={{paddingBottom: '3px', textAlign: 'right'}}>
+                {children}
+                <Dropdown
+                    disabled={playing}
+                    menu={{items, onClick}}
+                    placement={`topRight`}
+                >
+                    <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                        {selected.includes("short") ? '10 Minute Audio' : '20 Minute Audio' }
+                        {/* {selected} */}
+                        <DownOutlined />
+                    </Space>
+                    </a>
+                </Dropdown>
+            </div>
             <div className="icon-wrapper">
                 <Button size="large" icon={renderPlay} onClick={handlePlay} />
                 <Slider
