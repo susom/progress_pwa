@@ -38,9 +38,9 @@ export function Home() {
     const styles = {
         login : {
             display:"inline-block",
-            width:"30px",
-            height:"30px",
-            color:"#666",
+            width:"34px",
+            height:"34px",
+            color:"#333",
             cursor:"pointer"
         }
     }
@@ -263,7 +263,7 @@ export function Home() {
                             }
                         </Card>
                         <Button onClick={() => setDrawerVisible(true)} className="change_background">Change Background</Button>
-                        <div style={{color:'#666', marginBottom:'10px'}}> © 2023 Stanford University</div>
+                        <div style={{color:'#fff', marginBottom:'10px', textShadow:"1px 1px 1px #333"}}> © 2023 Stanford University</div>
                     </Col>
 
                 </Row>
