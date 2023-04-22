@@ -35,6 +35,13 @@ export function Home() {
     const context = useContext(SessionContext);
     const player = useRef();
 
+    const [isLooping, setIsLooping] = useState(false);
+
+    const handleLoopToggle = () => {
+        setIsLooping(!isLooping);
+    };
+
+
     const styles = {
         login : {
             display:"inline-block",
@@ -230,6 +237,7 @@ export function Home() {
                                     light={false}
                                     width='0%'
                                     height='0%'
+                                    loop={isLooping}
                                     onProgress={handlePlayed}
                                     playbackRate={playbackRate}
                                     // onBuffer={() => console.log('buffering start')}
@@ -248,6 +256,9 @@ export function Home() {
                                 files={[short, long]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
+                                loop={isLooping}
+                                handleLoopToggle={handleLoopToggle}
+
                             >
                                 {userInformation?.user_id ? (<span className={`user_name`}>Hi, {userInformation.user_id}</span>) : "" }
                             </MediaController>

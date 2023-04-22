@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Slider, Button, Dropdown, Space} from 'antd';
 import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} from '@ant-design/icons';
+import { Repeat } from 'react-bootstrap-icons';
 
 import './mediacontroller.css'
 // import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
-export const MediaController = ({ children, playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout}) => {
+export const MediaController = ({ children, playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout, loop, handleLoopToggle}) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
@@ -86,6 +87,27 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                     // railStyle={{color:'red'}}
                     // handleStyle
                 />
+                <Repeat
+                    size={30}
+                    style={loop ? {
+                        color: 'green',
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        right: '10px',
+                        top: '-5px'
+                    } : {
+                        color: '#ccc',
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        right: '10px',
+                        top: '-5px'
+                    }
+                    }
+                    onClick={() => {
+                        handleLoopToggle();
+                    }}
+                />
+
             </div>
         </div>
     )
