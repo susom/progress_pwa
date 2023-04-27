@@ -67,5 +67,19 @@
 }
 
 .media-controller {
-    margin-bottom:20px !important;
+    margin-bottom:30px !important;
+}
+
+
+.repeat_icon{
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: -5px
+}
+.repeat_icon i{
+    display:block;
+    font-style:normal;
+    font-size:77%;
+    line-height: 100%;
 }

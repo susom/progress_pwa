@@ -87,27 +87,21 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                     // railStyle={{color:'red'}}
                     // handleStyle
                 />
-                <Repeat
-                    size={30}
-                    style={loop ? {
-                        color: 'green',
-                        cursor: 'pointer',
-                        position: 'absolute',
-                        right: '10px',
-                        top: '-5px'
-                    } : {
-                        color: '#ccc',
-                        cursor: 'pointer',
-                        position: 'absolute',
-                        right: '10px',
-                        top: '-5px'
-                    }
-                    }
-                    onClick={() => {
-                        handleLoopToggle();
-                    }}
-                />
-
+                <div className={`repeat_icon`}>
+                    <Repeat
+                        size={24}
+                        style={loop ? {
+                            color: 'green',
+                        } : {
+                            color: '#ccc',
+                        }
+                        }
+                        onClick={() => {
+                            handleLoopToggle();
+                        }}
+                    />
+                    <i>Repeat</i>
+                </div>
             </div>
         </div>
     )
