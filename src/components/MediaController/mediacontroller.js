@@ -44,10 +44,15 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
     const handlePlay = () => handlePlayPause()
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
-    const items = files.map((e,i) => { //name has to be items for antd 
+    const items = files.map((e,i) => { //name has to be items for antd
+        console.log(e);
+
+        let file_display = e.includes("short") ? '10 Minute Audio' : '20 Minute Audio';
+        file_display =  e.includes("spanish") ? '20 Minute Spanish Audio' : file_display;
+
         return {
             key: e,
-            label: e.includes("short") ? '10 Minute Audio' : '20 Minute Audio',
+            label: file_display ,
             icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
             disabled: e === selected ? true : false
         }
@@ -64,7 +69,7 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                 >
                     <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                        {selected.includes("short") ? '10 Minute Audio' : '20 Minute Audio' }
+                        {selected.includes("short") ? '10 Minute Audio' : (selected.includes("spanish")) ? '20 Minute Spanish Audio': '20 Minute Audio' }
                         {/* {selected} */}
                         <DownOutlined />
                     </Space>

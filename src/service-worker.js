@@ -222,6 +222,7 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     Promise.all([
     fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a'), //make a network request to fetch audio
+    fetch('/static/media/binaural_spanish_20m.aa26669a73d3bc993b9b.m4a'), //make a network request to fetch audio
     fetch('/static/media/Audio_short.10c2e3048c4bd646040f.m4a')
   ]).then( async ([res, res2]) => {
       if (!res.ok || !res2.ok) {
@@ -241,11 +242,15 @@ self.addEventListener('install', function (event) {
         title: 'Audio_short.10c2e3048c4bd646040f.m4a',
         data: buffers[1]
       }
+      const audio3 = {
+        title: 'binaural_spanish_20m.aa26669a73d3bc993b9b.m4a',
+        data: buffers[1]
+      }
 
       console.log('Performing initial cache of full audio files', audio, audio2)
       // db_audios.files.put(audio)
       // db_audios.files.put(audio2)
-      return await db_audios.files.bulkPut([audio,audio2])
+      return await db_audios.files.bulkPut([audio,audio2, audio3])
     })
   );
   

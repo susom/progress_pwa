@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
 import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
+import spanish_long from '../../assets/audio/binaural_spanish_20m.m4a';
 import logo from '../../assets/img/logo_notext.png';
 import BackgroundSelection from "../../components/Backgrounds";
 // import Guide from '../../components/Guide';
@@ -253,7 +254,7 @@ export function Home() {
                                 playedRatio={played}
                                 handlePlayPause={handlePlayPause}
                                 seek={seek}
-                                files={[short, long]}
+                                files={[short, long, spanish_long]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
                                 loop={isLooping}
