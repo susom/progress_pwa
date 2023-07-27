@@ -53,10 +53,10 @@ const PWAInstallModal = (props) => {
                                 <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={browser_install_1}></img>
                                 <span>Click on the pictured icon in your URL bar</span>
                             </li>
-                            <li >
-                                <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={browser_install_2}></img>
-                                <span>Confirm installation by clicking on the "Install" button</span>
-                            </li>
+                            {/*<li >*/}
+                            {/*    <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={browser_install_2}></img>*/}
+                            {/*    <span>Confirm installation by clicking on the "Install" button</span>*/}
+                            {/*</li>*/}
                         </ol>
                     </BrowserView>
                     <MobileView className={`pwa_install`}>
