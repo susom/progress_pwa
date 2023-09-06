@@ -56,11 +56,11 @@
 
 .AppTitle h3{
     font-weight:normal;
+    position: absolute;
+    left: 86px;
+    top: 50px;
+    font-size:140%;
 }
-
-/* .AppTitle h3{
-    
-} */
 
 a.waterfall{
     background:#C6EAF4 url(../img/waterfall.gif) 0% 0% no-repeat;

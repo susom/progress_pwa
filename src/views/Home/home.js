@@ -12,7 +12,7 @@ import "../../assets/css/view_home.css";
 import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
 import spanish_long from '../../assets/audio/binaural_spanish_20m.m4a';
-import logo from '../../assets/img/logo_notext.png';
+import logo from '../../assets/img/logo_horizontal.png';
 import BackgroundSelection from "../../components/Backgrounds";
 // import Guide from '../../components/Guide';
 import PWAInstall from '../../components/PWAInstall/pwa_install';
@@ -211,9 +211,8 @@ export function Home() {
             <Row justify="center" className={`titleBar ${playing ? "playing" : ""}`}>
                 <Col style={{right: '10px'}}>
                     <hgroup className="AppTitle">
-                        <img src={logo} style={{maxWidth:'50px', display:'inline-block', marginRight: '10px', marginTop:'10px' , verticalAlign:'top'}}/>
-                        <div style={{display:'inline-block'}}>
-                            <h2>{userInformation?.study_id ??projectName}</h2>
+                        <div style={{position:'relative'}}>
+                            <img src={logo} style={{display:'inline-block', margin:'5px', maxHeight:'70px',  verticalAlign:'top'}}/>
                             <h3>Binaural Technology</h3>
                         </div>
                     </hgroup>
