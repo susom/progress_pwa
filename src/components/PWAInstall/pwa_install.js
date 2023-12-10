@@ -4,28 +4,59 @@ import { Modal } from 'react-bootstrap';
 import { Download , XSquare, PersonFillLock, PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import { BrowserView, MobileView } from 'react-device-detect';
 
-import AndroidInstallPrompt from "./pwa_install_android";
+import ChromeMobileInstallPrompt from "./pwa_install_chrome_mobile";
+
+import SafariMobileInstallPrompt from "./pwa_install_safari_mobile";
+
+import EdgeMobileInstallPrompt from "./pwa_install_edge_mobile";
+
+import UnsupportedMobile from "./pwa_install_unsupported_mobile";
+
+
 
 import "./pwa_install.css";
 
-import browser_install_1 from "../../assets/img/desktop_chrome_install_1.png";
-import browser_install_2 from "../../assets/img/desktop_chrome_install_2.png";
-import guideImage from '../../assets/img/GuideIOS.jpg';
-import guideSafari from '../../assets/img/GuideSafari.jpg';
-import guideSafariAdd from '../../assets/img/guideSafariAdd.png';
+
 
 // Detect device type (iOS or Android)
+// Updated getDeviceType function
 const getDeviceType = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return 'iOS';
+
+    // Check for Firefox
+    if (/firefox/i.test(userAgent) || /FxiOS/i.test(userAgent)) {
+        return 'Firefox';
     }
-    if (/android/i.test(userAgent)) {
-        return 'Android';
+
+    // Check for Edge
+    if (/Edg\//.test(userAgent) || /EdgiOS/i.test(userAgent) || /EdgA/i.test(userAgent)) {
+        if(isIOS()){
+            return 'EdgeIOS';
+        }else{
+            return 'Edge'
+        }
     }
-    return 'unknown';
+
+    // Check for Safari on iOS devices and Desktop Safari
+    if ((/iPad|iPhone|iPod/.test(userAgent) || /safari/i.test(userAgent)) && !/chrome|chromium|crios/i.test(userAgent) && !window.MSStream) {
+        return 'Safari';
+    }
+
+    // Default to Chrome if browser is not Firefox, Edge, or Safari
+    if(isIOS()){
+        return 'ChromeIOS';
+    }else{
+        return 'Chrome'
+    }
 };
 
+const isIOS = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+};
+
+// alert(getDeviceType());
+// alert(isIOS());
 // Update the PWAInstallModal component to display device-specific instructions
 const PWAInstallModal = (props) => {
     const [show, setShow]   = useState(false);
@@ -34,63 +65,55 @@ const PWAInstallModal = (props) => {
     const handleToggle = () => setShow(!show);
 
     const renderInstructions = () => {
-        if (deviceType === 'Android') {
-            return (
-                <AndroidInstallPrompt/>
-            );
-        }else{
-            //iOS or Unknwo
-            return (
-                <>
-                    <BrowserView className={`pwa_install`}>
-                        <p>The Calm Tool can be installed as an <b>desktop/laptop</b> application on your home screen using <b>Google Chrome</b>.
-                            This will enable offline use after being loaded for the first time.
-                            Please follow the instructions below.</p>
-                        <p>The Discovery Tool can be installed as an app on your <b>desktop or laptop</b> from the <b>Google Chrome Browser</b>.
-                            This will enable offline use of the app after being loaded for the first time.</p>
-                        <ol>
-                            <li >
-                                <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={browser_install_1}></img>
-                                <span>Click on the pictured icon in your URL bar</span>
-                            </li>
-                            {/*<li >*/}
-                            {/*    <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={browser_install_2}></img>*/}
-                            {/*    <span>Confirm installation by clicking on the "Install" button</span>*/}
-                            {/*</li>*/}
-                        </ol>
-                    </BrowserView>
-                    <MobileView className={`pwa_install`}>
-                        <p>The Calm Tool can be installed as an <b>IOS application</b> (iPhone, iPad) on your home screen using <b>Safari</b>.
-                            This will enable offline use after being loaded for the first time.
-                            Please follow the instructions.</p>
-                        <ol>
-                            <li >
-                                <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={guideSafari}></img>
-                                <span>Click on the share icon at the bottom of the Safari window (pictured)</span>
-                            </li>
-                            <li >
-                                <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={guideImage}></img>
-                                <span>Click on "Add to Home Screen" from the context menu that pops up</span>
-                            </li>
-                            <li >
-                                <img style={{ maxWidth: '85%', borderRadius: '10px', display: 'block' }} src={guideSafariAdd}></img>
-                                <span>Confirm installation by clicking on "Add"</span>
-                            </li>
-                            <li >
-                                <span>Finally an app icon will appear somewhere on your device's homescreen!</span>
-                            </li>
-                        </ol>
-                    </MobileView>
-                </>
-            )
+        switch (deviceType) {
+            case 'Chrome':
+                return (
+                    <>
+                        <MobileView>
+                            <ChromeMobileInstallPrompt />
+                        </MobileView>
+                    </>
+                );
+                break;
+            case 'Safari':
+                return (
+                    <>
+                        <MobileView>
+                            <SafariMobileInstallPrompt />
+                        </MobileView>
+                    </>
+                );
+            case 'EdgeIOS':
+                return (
+                    <>
+                        <MobileView>
+                            <EdgeMobileInstallPrompt />
+                        </MobileView>
+                    </>
+                );
+                break;
+            default:
+                // Handle other cases or provide a default message
+                return (
+                    <>
+                        <MobileView>
+                            <UnsupportedMobile isIOS={isIOS()} deviceType={deviceType}/>
+                        </MobileView>
+                    </>
+                );
         }
     };
 
+
+
+
     return (
         <>
-            <div className={`pwa_install_btn`}>
-                <Download className={`install_instructions`} onClick={handleToggle}/>
-            </div>
+            <MobileView>
+                <div className={`pwa_install_btn`}>
+                    <Download className={`install_instructions`} onClick={handleToggle}/>
+                </div>
+            </MobileView>
             <Modal show={show} onHide={handleToggle} className={`install_modal`}>
                 <Modal.Header>
                     <Modal.Title>App Installation Instructions</Modal.Title>
