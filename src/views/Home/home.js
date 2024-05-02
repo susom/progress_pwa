@@ -9,6 +9,7 @@ import { db_sessions, db_user } from "../../database/db";
 import MediaController from "../../components/MediaController";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
+import male from "../../assets/audio/Male_binaural_20m.m4a";
 import long from "../../assets/audio/R01_Beth_wBeats.m4a";
 import short from '../../assets/audio/Audio_short.m4a';
 import spanish_long from '../../assets/audio/binaural_spanish_20m.m4a';
@@ -253,7 +254,7 @@ export function Home() {
                                 playedRatio={played}
                                 handlePlayPause={handlePlayPause}
                                 seek={seek}
-                                files={[short, long, spanish_long]}
+                                files={[short, long, spanish_long, male]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
                                 loop={isLooping}

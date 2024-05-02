@@ -217,42 +217,32 @@ self.addEventListener('fetch', function (event) {
 
 //Fires first upon every service worker installation 
 self.addEventListener('install', function (event) {
-  // const url       = new URL(event.request.url);
-  // const fileName  = url.pathname.split('/').pop();
+  const audioUrls = [
+    '/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
+    '/static/media/Audio_short.10c2e3048c4bd646040f.m4a',
+    '/static/media/binaural_spanish_20m.aa26669a73d3bc993b9b.m4a',
+    '/static/media/Male_binaural_20m.53e12780e435334b9328.m4a'
+  ];
   event.waitUntil(
-    Promise.all([
-      fetch('/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a'), //make a network request to fetch audio
-      fetch('/static/media/Audio_short.10c2e3048c4bd646040f.m4a'),
-      fetch('/static/media/binaural_spanish_20m.aa26669a73d3bc993b9b.m4a')
-  ]).then( async ([res, res2, res3]) => {
-      if (!res.ok || !res2.ok || !res3.ok) {
-        throw new TypeError("bad response status");
-      }
-      let cloneLong = res.clone()
-      let cloneShort = res2.clone()
-      let cloneSpanish= res3.clone()
-      
-      return [await cloneLong.arrayBuffer(), await cloneShort.arrayBuffer(), await cloneSpanish.arrayBuffer()]
-    })
-    .then( async buffers => { //store full audiofile buffer in indexDB
-      const audio = {
-        title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
-        data: buffers[0]
-      }
-      const audio2 = {
-        title: 'Audio_short.10c2e3048c4bd646040f.m4a',
-        data: buffers[1]
-      }
-      const audio3 = {
-        title: 'binaural_spanish_20m.aa26669a73d3bc993b9b.m4a',
-        data: buffers[2]
-      }
-
-      console.log('Performing initial cache of full audio files', audio, audio2, audio3)
-      // db_audios.files.put(audio)
-      // db_audios.files.put(audio2)
-      return await db_audios.files.bulkPut([audio,audio2, audio3])
-    })
+      Promise.all(audioUrls.map(url => fetch(url)))
+          .then(async responses => {
+            if (responses.some(res => !res.ok)) {
+              throw new TypeError("bad response status");
+            }
+            const clones = responses.map(res => res.clone());
+            const buffers = await Promise.all(clones.map(clone => clone.arrayBuffer()));
+            return buffers;
+          })
+          .then(async buffers => {
+            const audioFiles = [
+              { title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a', data: buffers[0] },
+              { title: 'Audio_short.10c2e3048c4bd646040f.m4a', data: buffers[1] },
+              { title: 'binaural_spanish_20m.aa26669a73d3bc993b9b.m4a', data: buffers[2] },
+              { title: 'Male_binaural_20m.53e12780e435334b9328.m4a', data: buffers[3] }
+            ];
+            console.log('Performing initial cache of full audio files', audioFiles);
+            return await db_audios.files.bulkPut(audioFiles);
+          })
   );
   
 })

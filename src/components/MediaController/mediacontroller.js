@@ -45,10 +45,9 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
     const items = files.map((e,i) => { //name has to be items for antd
-        console.log(e);
-
         let file_display = e.includes("short") ? '10 Minute Audio' : '20 Minute Audio';
         file_display =  e.includes("spanish") ? '20 Minute Spanish Audio' : file_display;
+        file_display =  e.includes("Male") ? 'Male Audio' : file_display;
 
         return {
             key: e,
