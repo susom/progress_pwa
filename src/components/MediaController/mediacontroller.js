@@ -56,7 +56,6 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
             disabled: e === selected ? true : false
         }
     })
-    
     return (
         <div className="media-controller" style={{marginBottom: '35px'}}>
             <div style={{paddingBottom: '3px', textAlign: 'right'}}>
@@ -68,8 +67,10 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                 >
                     <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                        {selected.includes("short") ? '10 Minute Audio' : (selected.includes("spanish")) ? '20 Minute Spanish Audio': '20 Minute Audio' }
-                        {/* {selected} */}
+                        {selected.includes("short") ? '10 Minute Audio' :
+                            selected.includes("spanish") ? '20 Minute Spanish Audio' :
+                                selected.includes("Male") ? 'Male Audio' :
+                                    '20 Minute Audio'}
                         <DownOutlined />
                     </Space>
                     </a>
