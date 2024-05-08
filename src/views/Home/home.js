@@ -9,11 +9,16 @@ import { db_sessions, db_user } from "../../database/db";
 import MediaController from "../../components/MediaController";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/view_home.css";
-import male from "../../assets/audio/Male_binaural_20m.m4a";
-import long from "../../assets/audio/R01_Beth_wBeats.m4a";
-import short from '../../assets/audio/Audio_short.m4a';
-import spanish_long from '../../assets/audio/binaural_spanish_20m.m4a';
-import logo from '../../assets/img/logo_horizontal.png';
+
+import female_long from "../../assets/audio/R01_Beth_wBeats.m4a";
+import female_short from '../../assets/audio/Audio_short.m4a';
+import male_long from "../../assets/audio/Male_binaural_20m.m4a";
+import male_short from "../../assets/audio/Male_binaural_10m.m4a";
+import aus_female_long from "../../assets/audio/AUS_female_20m.m4a";
+import aus_female_short from "../../assets/audio/AUS_female_10m.m4a";
+import spanish_female_long from '../../assets/audio/binaural_spanish_20m.m4a';
+
+import logo from '../../assets/img/logo_side.png';
 import BackgroundSelection from "../../components/Backgrounds";
 // import Guide from '../../components/Guide';
 import PWAInstall from '../../components/PWAInstall/pwa_install';
@@ -28,7 +33,7 @@ export function Home() {
     const [projectName, setProjectName] = useState("Empowered Relief");
     const [formatedTimeInterval, setFormatedTimeInterval] = useState("00:00:00");
     const [loading, setLoading] = useState(true)
-    const [selectedAudio, setSelectedAudio] = useState(long)
+    const [selectedAudio, setSelectedAudio] = useState(female_long)
     const [userInformation, setUserInformation] = useState('')
     const [instructionsOpen, setInstructions] = useState(false)
     // const { state: userInformation } = useLocation(); //User information passed from login navigation / session
@@ -214,7 +219,6 @@ export function Home() {
                     <hgroup className="AppTitle">
                         <div style={{position:'relative'}}>
                             <img src={logo} style={{display:'inline-block', margin:'5px', maxHeight:'70px',  verticalAlign:'top'}}/>
-                            <h3>Binaural Technology</h3>
                         </div>
                     </hgroup>
                 </Col>
@@ -254,7 +258,7 @@ export function Home() {
                                 playedRatio={played}
                                 handlePlayPause={handlePlayPause}
                                 seek={seek}
-                                files={[short, long, spanish_long, male]}
+                                files={[female_long,female_short,male_long, male_short, aus_female_long, aus_female_short, spanish_female_long]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
                                 loop={isLooping}

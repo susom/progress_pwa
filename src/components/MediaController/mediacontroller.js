@@ -45,9 +45,13 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
     const items = files.map((e,i) => { //name has to be items for antd
-        let file_display = e.includes("short") ? '10 Minute Audio' : '20 Minute Audio';
-        file_display =  e.includes("spanish") ? '20 Minute Spanish Audio' : file_display;
-        file_display =  e.includes("Male") ? 'Male Audio' : file_display;
+        let file_display = e.includes("Audio_short") ? 'Female Voice (10-min)' : 'Female Voice (20-min)';
+        file_display =  e.includes("binaural_spanish_20m") ? 'Female Voice Spanish (20-min)' : file_display;
+        file_display =  e.includes("Male_binaural_20m") ? 'Male Voice (20-min)' : file_display;
+        file_display =  e.includes("Male_binaural_10m") ? 'Male Voice (10-min)' : file_display;
+        file_display =  e.includes("AUS_female_20m") ? 'Australian Female Voice (20-min)' : file_display;
+        file_display =  e.includes("AUS_female_10m") ? 'Australian Female Voice (10-min)' : file_display;
+
 
         return {
             key: e,
@@ -67,10 +71,13 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                 >
                     <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                        {selected.includes("short") ? '10 Minute Audio' :
-                            selected.includes("spanish") ? '20 Minute Spanish Audio' :
-                                selected.includes("Male") ? 'Male Audio' :
-                                    '20 Minute Audio'}
+                        {selected.includes("Audio_short") ? 'Female Voice (10-min)' :
+                            selected.includes("binaural_spanish_20m") ? 'Female Voice Spanish (20-min)' :
+                                selected.includes("Male_binaural_20m") ? 'Male Voice (20-min)' :
+                                    selected.includes("Male_binaural_10m") ? 'Male Voice (10-min)' :
+                                        selected.includes("AUS_female_20m") ? 'Australian Female Voice (20-min)' :
+                                            selected.includes("AUS_female_10m") ? 'Australian Female Voice (10-min)' :
+                                    'Female Voice (20-min)'}
                         <DownOutlined />
                     </Space>
                     </a>

@@ -221,7 +221,10 @@ self.addEventListener('install', function (event) {
     '/static/media/R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a',
     '/static/media/Audio_short.10c2e3048c4bd646040f.m4a',
     '/static/media/binaural_spanish_20m.aa26669a73d3bc993b9b.m4a',
-    '/static/media/Male_binaural_20m.53e12780e435334b9328.m4a'
+    '/static/media/Male_binaural_20m.53e12780e435334b9328.m4a',
+    '/static/media/Male_binaural_10m.f9864fbc6eaa94fcc01c.m4a',
+    '/static/media/AUS_female_20m.80c1dd2801e43a7aa271.m4a',
+    '/static/media/AUS_female_10m.74c57410e7f036d76c3b.m4a'
   ];
   event.waitUntil(
       Promise.all(audioUrls.map(url => fetch(url)))
@@ -238,7 +241,10 @@ self.addEventListener('install', function (event) {
               { title: 'R01_Beth_wBeats.4fcd5f87321d58e6cbc5.m4a', data: buffers[0] },
               { title: 'Audio_short.10c2e3048c4bd646040f.m4a', data: buffers[1] },
               { title: 'binaural_spanish_20m.aa26669a73d3bc993b9b.m4a', data: buffers[2] },
-              { title: 'Male_binaural_20m.53e12780e435334b9328.m4a', data: buffers[3] }
+              { title: 'Male_binaural_20m.53e12780e435334b9328.m4a', data: buffers[3] },
+              { title: 'Male_binaural_10m.f9864fbc6eaa94fcc01c.m4a', data: buffers[4] },
+              { title: 'AUS_female_20m.80c1dd2801e43a7aa271.m4a', data: buffers[5] },
+              { title: 'AUS_female_10m.74c57410e7f036d76c3b.m4a', data: buffers[6] },
             ];
             console.log('Performing initial cache of full audio files', audioFiles);
             return await db_audios.files.bulkPut(audioFiles);
