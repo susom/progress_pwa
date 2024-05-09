@@ -285,12 +285,12 @@ export function Home() {
                 </Row>
             </div>
 
-            <div className={`project_login ${userInformation?.user_id ? "out" : "in"}`}>
-                {userInformation?.user_id
-                    ? (<PersonCheck style={styles.login} onClick={() => { logout() }}/>)
-                    : (<PersonLock style={styles.login} onClick={() => navigate('/login')}/>)
-                }
-            </div>
+            {/*<div className={`project_login ${userInformation?.user_id ? "out" : "in"}`}>*/}
+            {/*    {userInformation?.user_id*/}
+            {/*        ? (<PersonCheck style={styles.login} onClick={() => { logout() }}/>)*/}
+            {/*        : (<PersonLock style={styles.login} onClick={() => navigate('/login')}/>)*/}
+            {/*    }*/}
+            {/*</div>*/}
             <PWAInstall userInformation={userInformation}/>
         </div>
     )
