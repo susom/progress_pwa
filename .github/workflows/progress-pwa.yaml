@@ -22,28 +22,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: som-rit-relief-app
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Authenticate with Service Account
-        run: |
-          # Write the GCP service account JSON to a file
-          echo "${{ secrets.GCP_SA_KEY }}" > "$HOME/som-rit-relief-app.json"
-          # Verify the JSON file is created correctly
-          cat "$HOME/som-rit-relief-app.json"
-          # Authenticate using the service account key
-          gcloud auth activate-service-account --key-file="$HOME/som-rit-relief-app.json"
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      
       - name: Install Missing Babel Plugin (Temporary Fix)
         run: npm install --save-dev @babel/plugin-proposal-private-property-in-object
 
+      - name: Authenticate with Google Cloud Service Account
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}  # The JSON key as a secret
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: som-rit-relief-app
+          version: latest
+      
       - name: Authenticate Docker with GCR
         run: gcloud auth configure-docker
 
@@ -63,9 +60,14 @@ jobs:
           source "$HOME/google-cloud-sdk/path.bash.inc"
           gcloud version || true
 
-      - name: Build and Deploy to Cloud Run
+      - name: Install Dependencies and Build
         run: |
           set -ex
           npm install
           npm run build
-          gcloud app deploy app.yaml
+          set +x
+
+      - name: Deploy to Google App Engine
+        run: |
+          gcloud version || true
+          gcloud app deploy app.yaml --quiet
