@@ -47,7 +47,7 @@ jobs:
       - name: Cache Google Cloud SDK
         uses: actions/cache@v3
         with:
-          path: ${{ runner.temp }}/google-cloud-sdk
+          path: ~/.config/gcloud
           key: ${{ runner.os }}-gcloud-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-gcloud-
