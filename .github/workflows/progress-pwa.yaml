@@ -34,11 +34,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install Python 3.8.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.8.10
-
       - name: Authenticate Docker with GCR
         run: gcloud auth configure-docker
 
