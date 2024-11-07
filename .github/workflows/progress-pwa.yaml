@@ -31,7 +31,11 @@ jobs:
 
       - name: Authenticate with Service Account
         run: |
-          printf '%s' "${{ secrets.GCP_SA_KEY }}" > "$HOME/som-rit-relief-app.json"
+          # Write the GCP service account JSON to a file
+          echo "${{ secrets.GCP_SA_KEY }}" > "$HOME/som-rit-relief-app.json"
+          # Verify the JSON file is created correctly
+          cat "$HOME/som-rit-relief-app.json"
+          # Authenticate using the service account key
           gcloud auth activate-service-account --key-file="$HOME/som-rit-relief-app.json"
 
       - name: Set up Node.js
