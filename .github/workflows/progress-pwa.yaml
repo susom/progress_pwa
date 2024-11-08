@@ -1,0 +1,73 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    env:
+      CLOUD_RUN_REGION: us-west1
+      CLOUDSDK_CORE_DISABLE_PROMPTS: 1 # prevent gcloud from prompting
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Install Missing Babel Plugin (Temporary Fix)
+        run: npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
+      - name: Authenticate with Google Cloud Service Account
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}  # The JSON key as a secret
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: som-rit-relief-app
+          version: latest
+      
+      - name: Authenticate Docker with GCR
+        run: gcloud auth configure-docker
+
+      - name: Cache Google Cloud SDK
+        uses: actions/cache@v3
+        with:
+          path: ~/.config/gcloud
+          key: ${{ runner.os }}-gcloud-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-gcloud-
+
+      - name: Verify gcloud installation
+        run: |
+          if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then
+            curl https://sdk.cloud.google.com | bash;
+          fi
+          source "$HOME/google-cloud-sdk/path.bash.inc"
+          gcloud version || true
+
+      - name: Install Dependencies and Build
+        run: |
+          set -ex
+          npm install
+          npm run build
+          set +x
+
+      - name: Deploy to Google App Engine
+        run: |
+          gcloud version || true
+          gcloud app deploy app.yaml --quiet
