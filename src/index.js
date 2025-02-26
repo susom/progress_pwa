@@ -6,6 +6,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Offline from './components/Offline/offline';
+import ReactGA from "react-ga4";
+ReactGA.initialize("G-BB59VZD730");
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

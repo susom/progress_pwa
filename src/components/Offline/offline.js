@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Drawer, Row, Button} from 'antd';
 import { EyeInvisibleOutlined, FileTextOutlined } from '@ant-design/icons';
+import ReactGA from "react-ga4";
 // import Guide from '../../components/Guide';
 import wifi from '../../assets/img/wifi-connection-offline-icon.png';
 import './offline.css'
@@ -46,7 +47,13 @@ export default function Offline({ children }) {
     };
 
     const showModal = () => {
-        setIsModalOpen(!isModalOpen)
+        setIsModalOpen(!isModalOpen);
+        ReactGA.event({
+            category: "Guide",
+            action: isModalOpen ? "Close Guide" : "Open Guide",
+            label: "Guide Modal"
+        });
+        console.log("Guide Modal", isModalOpen ? "Close Guide" : "Open Guide");
     }
 
     const onCloseInstall = () => {

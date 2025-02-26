@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from 'react-bootstrap';
 import ov_logo from "../../assets/img/logo_notext.png";
+import ReactGA from "react-ga4";
 
 const AndroidInstallPrompt = () => {
     const [installPromptEvent, setInstallPromptEvent] = useState(null);
@@ -24,6 +25,12 @@ const AndroidInstallPrompt = () => {
         installPromptEvent.prompt();
 
         const { outcome } = await installPromptEvent.userChoice;
+        ReactGA.event({
+            category: "PWA",
+            action: "Install Prompt",
+            label: outcome === "accepted" ? "Accepted" : "Dismissed"
+        });
+        console.log("Install Prompt", outcome === "accepted" ? "Accepted" : "Dismissed");
         if (outcome === "accepted") {
             setInstallPromptEvent(null);
         }

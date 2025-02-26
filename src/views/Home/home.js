@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import { Card, Col, Row, Button, Drawer } from 'antd';
 import { PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import axios from 'axios';
+import ReactGA from "react-ga4";
 import { db_sessions, db_user } from "../../database/db";
 
 import MediaController from "../../components/MediaController";
@@ -138,11 +139,22 @@ export function Home() {
         setPlaying(!playing)
         
         if (timeStarted === null) { //Clicking play
-            setTimeStarted(new Date().toISOString())
+            setTimeStarted(new Date().toISOString());
+            ReactGA.event({
+                category: "Media",
+                action: "Play Audio",
+                label: selectedAudio
+            });
+            console.log("Play Audio", selectedAudio);
         } else { //Clicked pause
             sendUsageData() //Send play statistics to server
-            
-            setTimeStarted(null)
+            setTimeStarted(null);
+            ReactGA.event({
+                category: "Media",
+                action: "Pause Audio",
+                label: selectedAudio
+            });
+            console.log("Pause Audio", selectedAudio);
         }
     }
 

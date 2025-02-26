@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { Download , XSquare, PersonFillLock, PersonLock, PersonCheck } from 'react-bootstrap-icons';
 import { BrowserView, MobileView } from 'react-device-detect';
+import ReactGA from "react-ga4";
 
 import ChromeMobileInstallPrompt from "./pwa_install_chrome_mobile";
 
@@ -62,7 +63,15 @@ const PWAInstallModal = (props) => {
     const [show, setShow]   = useState(false);
     const deviceType        = getDeviceType();
 
-    const handleToggle = () => setShow(!show);
+    const handleToggle = () => {
+        setShow(!show);
+        ReactGA.event({
+            category: "PWA",
+            action: show ? "Close Install Instructions" : "Open Install Instructions",
+            label: "PWA Install Modal"
+        });
+        console.log("PWA Install Modal", show ? "Close Install Instructions" : "Open Install Instructions");
+    }
 
     const renderInstructions = () => {
         switch (deviceType) {

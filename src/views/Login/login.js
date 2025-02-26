@@ -3,6 +3,7 @@ import { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
 import { db_user } from "../../database/db"
+import ReactGA from "react-ga4";
 
 export function Login() {
     const [username, setUsername] = useState('')
@@ -60,7 +61,12 @@ export function Login() {
                 password: password
             }
         }).then((res) => {
-            handleLogin(res)
+            handleLogin(res);
+            ReactGA.event({
+                category: "User",
+                action: "Login Attempt",
+                label: "Login Form"
+            });
         })
             .catch(err => renderError())
     }

@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {SessionContext} from "../../contexts/Session";
 import "../../assets/css/backgrounds.css";
+import ReactGA from "react-ga4";
 
 function BackgroundSelection (){
     const session_context   = useContext(SessionContext);
@@ -10,6 +11,12 @@ function BackgroundSelection (){
                 ...session_context, 
                 background: e.target.name
             })
+            ReactGA.event({
+                category: "Customization",
+                action: "Change Background",
+                label: e.target.name
+            });
+            console.log("Change Background", e.target.name);
         }
     }
     
