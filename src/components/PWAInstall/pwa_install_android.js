@@ -39,8 +39,8 @@ const AndroidInstallPrompt = () => {
     return (
         (installPromptEvent || 1) && (
             <div className={`pwa_install android`}>
-                <p>The Calm Tool can be installed as an app on your <b>Android device</b> using the <b>Chrome browser</b>.
-                    This will install an app icon on your homescreen and enable offline use of the app after being loaded for the first time.</p>
+                <p>The Calm Tool can be installed as an app on your <b>Android device</b> using the <b>Google Chrome browser</b>.
+                    This will install an app icon on your home screen and enable offline use of the app after being loaded for the first time.</p>
 
                 <dl>
                     <dt><img src={ov_logo} alt="app logo"/></dt>
