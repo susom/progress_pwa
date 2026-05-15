@@ -1,8 +1,8 @@
 // Import necessary libraries
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Download , XSquare, PersonFillLock, PersonLock, PersonCheck } from 'react-bootstrap-icons';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { Download, XSquare } from 'react-bootstrap-icons';
+import { MobileView } from 'react-device-detect';
 import ReactGA from "react-ga4";
 
 import ChromeMobileInstallPrompt from "./pwa_install_chrome_mobile";
@@ -70,46 +70,18 @@ const PWAInstallModal = (props) => {
             action: show ? "Close Install Instructions" : "Open Install Instructions",
             label: "PWA Install Modal"
         });
-        console.log("PWA Install Modal", show ? "Close Install Instructions" : "Open Install Instructions");
     }
 
     const renderInstructions = () => {
         switch (deviceType) {
             case 'Chrome':
-                return (
-                    <>
-                        <MobileView>
-                            <ChromeMobileInstallPrompt />
-                        </MobileView>
-                    </>
-                );
-                break;
+                return <ChromeMobileInstallPrompt />;
             case 'Safari':
-                return (
-                    <>
-                        <MobileView>
-                            <SafariMobileInstallPrompt />
-                        </MobileView>
-                    </>
-                );
+                return <SafariMobileInstallPrompt />;
             case 'EdgeIOS':
-                return (
-                    <>
-                        <MobileView>
-                            <EdgeMobileInstallPrompt />
-                        </MobileView>
-                    </>
-                );
-                break;
+                return <EdgeMobileInstallPrompt />;
             default:
-                // Handle other cases or provide a default message
-                return (
-                    <>
-                        <MobileView>
-                            <UnsupportedMobile isIOS={isIOS()} deviceType={deviceType}/>
-                        </MobileView>
-                    </>
-                );
+                return <UnsupportedMobile isIOS={isIOS()} deviceType={deviceType} />;
         }
     };
 

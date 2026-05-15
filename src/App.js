@@ -26,26 +26,12 @@ function TrackPageViews() {
         action: "Page View",
         label: location.pathname === "/" ? "/landing" : location.pathname
     });
-    console.log("Page View", location.pathname === "/" ? "/landing" : location.pathname);
   }, [location]);
 
   return null;
 }
 
 function App() {
-  // useEffect(() => {
-  //   window.addEventListener("beforeunload", handleUnload);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleUnload);
-  //   };
-  // }, []);
-
-  // const handleUnload = (e) => {
-  //   const message = "o/";
-  //   (e || window.event).returnValue = message; //Gecko + IE
-  //   return message;
-  // };
-
   return (
     <DatabaseContextProvider>
       <SessionContextProvider>
@@ -60,7 +46,6 @@ function App() {
                 <Route path='/login' element={<Login  />} />
               </Routes>
             </div>
-            {/* <BackgroundSelection/> */}
           </div>
         </BrowserRouter>
       </SessionContextProvider>

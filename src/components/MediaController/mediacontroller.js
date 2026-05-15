@@ -4,30 +4,44 @@ import { CaretRightOutlined, PauseOutlined, DownOutlined, CheckCircleTwoTone} fr
 import { Repeat } from 'react-bootstrap-icons';
 
 import './mediacontroller.css'
-// import {PersonCheck, PersonLock} from "react-bootstrap-icons";
 
-export const MediaController = ({ children, playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect , userInformation, navigate, logout, loop, handleLoopToggle}) => {
+const AUDIO_LABELS = {
+    Audio_short: 'Rachel (10-min)',
+    binaural_spanish_20m: 'Español (20-min)',
+    Male_binaural_20m: 'Thomas (20-min)',
+    Male_binaural_10m: 'Thomas (10-min)',
+    AUS_female_20m: 'Sara (20-min)',
+    AUS_female_10m: 'Sara (10-min)',
+    Anna_20m: 'Anna (20-min)',
+    Anna_10m: 'Anna (10-min)',
+    Nathan_20m: 'Nathan (20-min)',
+    Nathan_10m: 'Nathan (10-min)',
+};
+
+const getAudioLabel = (filepath) =>
+    Object.entries(AUDIO_LABELS).find(([k]) => filepath.includes(k))?.[1] ?? 'Rachel (20-min)';
+
+export const MediaController = ({ children, playing, playedRatio, handlePlayPause, seek, selected, files, onAudioSelect, loop, handleLoopToggle}) => {
     const [value, setValue] = useState(0);
     const [progressEnabled, setProgressEnabled] = useState(true)
     const formatter = (value) => `${value}%`;
     const onAfterChange = (e) => {
         if(e){
             let formatter = new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 2,      
+                minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
             setValue(e)
             seek(formatter.format(e/100))
         }
-        
+
         setProgressEnabled(true)
     }
     const onChange = (e) => {
         setProgressEnabled(false)
         setValue(e)
     }
-    
-    // On audio select handler
+
     const onClick = ({ key }) => {
         onAudioSelect(key)
     };
@@ -39,48 +53,30 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [playedRatio])
 
-
-
     const handlePlay = () => handlePlayPause()
 
     const renderPlay = playing ? <PauseOutlined /> : <CaretRightOutlined />
-    const items = files.map((e,i) => { //name has to be items for antd
-        let file_display = e.includes("Audio_short") ? 'Female Voice (10-min)' : 'Female Voice (20-min)';
-        file_display =  e.includes("binaural_spanish_20m") ? 'Female Voice Spanish (20-min)' : file_display;
-        file_display =  e.includes("Male_binaural_20m") ? 'Male Voice (20-min)' : file_display;
-        file_display =  e.includes("Male_binaural_10m") ? 'Male Voice (10-min)' : file_display;
-        file_display =  e.includes("AUS_female_20m") ? 'Australian Female Voice (20-min)' : file_display;
-        file_display =  e.includes("AUS_female_10m") ? 'Australian Female Voice (10-min)' : file_display;
+    const items = files.map((e) => ({
+        key: e,
+        label: getAudioLabel(e),
+        icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
+        disabled: e === selected,
+    }))
 
-
-        return {
-            key: e,
-            label: file_display ,
-            icon: e === selected ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : undefined,
-            disabled: e === selected ? true : false
-        }
-    })
     return (
         <div className="media-controller" style={{marginBottom: '35px'}}>
             <div style={{paddingBottom: '3px', textAlign: 'right'}}>
                 {children}
                 <Dropdown
-                    disabled={playing}
                     menu={{items, onClick}}
                     placement={`topRight`}
                 >
-                    <a onClick={(e) => e.preventDefault()}>
+                    <span style={{cursor: 'pointer'}}>
                     <Space>
-                        {selected.includes("Audio_short") ? 'Female Voice (10-min)' :
-                            selected.includes("binaural_spanish_20m") ? 'Female Voice Spanish (20-min)' :
-                                selected.includes("Male_binaural_20m") ? 'Male Voice (20-min)' :
-                                    selected.includes("Male_binaural_10m") ? 'Male Voice (10-min)' :
-                                        selected.includes("AUS_female_20m") ? 'Australian Female Voice (20-min)' :
-                                            selected.includes("AUS_female_10m") ? 'Australian Female Voice (10-min)' :
-                                    'Female Voice (20-min)'}
+                        {getAudioLabel(selected)}
                         <DownOutlined />
                     </Space>
-                    </a>
+                    </span>
                 </Dropdown>
             </div>
             <div className="icon-wrapper">
@@ -95,9 +91,6 @@ export const MediaController = ({ children, playing, playedRatio, handlePlayPaus
                     tooltip={{
                         formatter
                     }}
-                    // trackStyle={{color: 'red'}}
-                    // railStyle={{color:'red'}}
-                    // handleStyle
                 />
                 <div className={`repeat_icon`}>
                     <Repeat
