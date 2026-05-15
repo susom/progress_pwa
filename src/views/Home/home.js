@@ -207,7 +207,7 @@ export function Home() {
                                 playedRatio={played}
                                 handlePlayPause={handlePlayPause}
                                 seek={seek}
-                                files={[female_long,female_short,male_long, male_short, aus_female_long, aus_female_short, spanish_female_long, anna_long, anna_short, nathan_long, nathan_short]}
+                                files={[anna_long, anna_short, nathan_long, nathan_short, female_long, female_short, aus_female_long, aus_female_short, male_long, male_short, spanish_female_long]}
                                 selected={selectedAudio}
                                 onAudioSelect={onAudioSelect}
                                 loop={isLooping}
