@@ -29,6 +29,15 @@ If you'd rather not install the package, you can opt to serve the build folder w
 
 Ensure to navigate to localhost:xxxx in an incognito window
 
+# Adding new audio tracks
+
+1. Drop the audio file (`.m4a` or `.mp3`) into `src/assets/audio/`
+2. Import it in `src/views/Home/home.js` and add it to the `files={[...]}` array in the `<MediaController>` component
+3. Add an entry to `AUDIO_LABELS` in `src/components/MediaController/mediacontroller.js` — the key is a unique substring of the filename, the value is the display label shown in the dropdown
+4. Run `npm run build` — Workbox picks up the new file automatically and includes it in the Safari pre-cache manifest
+
+Note: files larger than 30 MB will be excluded from the pre-cache manifest. If you add a file over that size, increase `maximumFileSizeToCacheInBytes` in `workbox.config.js` accordingly.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
